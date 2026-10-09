@@ -1,21 +1,33 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
-    background-color: #f7fbf8;
-    color: #0f675b;
+    margin: 0;
     font-family: Arial, sans-serif;
-    margin: 0px;
+    background-color: #f7fbf8;
+    color: #173d37;
 }
 
 nav {
     background-color: #0f675b;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 nav h2 {
-    color: white;
-    margin-left: 39px;
+    margin: 0;
 }
 
 .navegacao {
+    display: flex;
+    gap: 20px;
     list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .navegacao a {
@@ -23,39 +35,42 @@ nav h2 {
     text-decoration: none;
 }
 
-h1 {
-    margin-left: 10px;
+.navegacao a:hover {
+    text-decoration: underline;
 }
 
-section p {
-    margin-left: 10px;
+main {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+h1 {
+    color: #0f675b;
 }
 
 .artigo {
     background-color: white;
-    border: 1px solid #dbe7e2;
-    width: 600px;
-    margin: 20px 10px;
     padding: 20px;
+    margin-top: 20px;
+    border: 1px solid #dbe7e2;
+    border-radius: 8px;
 }
 
 .artigo h3 {
-    margin-top: 0px;
+    color: #0f675b;
+    margin-top: 0;
 }
 
-.artigo p {
-    color: #333333;
-    margin-left: 0px;
-}
-
-.artigo .fonte {
+.fonte {
     font-size: 13px;
-    color: #50807e;
+    color: #55736c;
 }
 
 .aviso {
     font-size: 13px;
-    color: #50807e;
+    color: #55736c;
+    margin-top: 30px;
 }
 
 section a {
@@ -64,11 +79,6 @@ section a {
 
 footer {
     text-align: center;
-    color: #50807e;
-}
-
-@media (max-width: 768px) {
-    .artigo {
-        width: auto;
-    }
+    padding: 20px;
+    color: #55736c;
 }
