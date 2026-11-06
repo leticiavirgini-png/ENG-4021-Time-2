@@ -10,48 +10,70 @@
 <body>
     <nav>
         <h2>MedMap</h2>
-
         <div class="navegacao">
             <a href="{% url 'InicioLogado' %}">Início</a>
             <a href="{% url 'CheckupInteligente' %}">Check-up Inteligente</a>
             <a href="{% url 'RelatorioPreventivo' %}">Relatório Preventivo</a>
         </div>
     </nav>
+
     <main>
         <h1>Meu perfil de saúde</h1>
-        <p>Organize seus dados e hábitos para acompanhar melhor seus cuidados.</p>
+        <p>Mantenha seus dados atualizados para organizar melhor seus cuidados.</p>
+
         <section class="caixa">
             <h2>Informações pessoais</h2>
-            <form>
+
+            {% if mensagem %}
+                <p class="mensagem">{{ mensagem }}</p>
+            {% endif %}
+
+            {% if erro %}
+                <p class="erro">{{ erro }}</p>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+
                 <label for="nome">Nome completo</label>
-                <input id="nome" type="text" placeholder="Seu nome" autocomplete="name">
+                <input
+                    id="nome"
+                    name="nome"
+                    type="text"
+                    value="{{ perfil.nome|default:usuario.nome }}"
+                    maxlength="100"
+                    required
+                >
+
                 <div class="linha">
                     <div>
-                        <label for="idade">Idade</label>
-                        <input id="idade" type="number" min="0" max="120" placeholder="Sua idade">
+                        <label for="data_nascimento">Data de nascimento</label>
+                        <input
+                            id="data_nascimento"
+                            name="data_nascimento"
+                            type="date"
+                            value="{{ perfil.data_nascimento|date:'Y-m-d' }}"
+                            required
+                        >
                     </div>
+
                     <div>
-                        <label for="atividade">Atividade física</label>
-                        <select id="atividade">
+                        <label for="sexo">Sexo</label>
+                        <select id="sexo" name="sexo" required>
                             <option value="">Selecione</option>
-                            <option>Pratico regularmente</option>
-                            <option>Pratico às vezes</option>
-                            <option>Não pratico</option>
+                            <option value="Feminino" {% if perfil.sexo == "Feminino" %}selected{% endif %}>Feminino</option>
+                            <option value="Masculino" {% if perfil.sexo == "Masculino" %}selected{% endif %}>Masculino</option>
+                            <option value="Outro" {% if perfil.sexo == "Outro" %}selected{% endif %}>Outro</option>
+                            <option value="Prefiro não informar" {% if perfil.sexo == "Prefiro não informar" %}selected{% endif %}>Prefiro não informar</option>
                         </select>
                     </div>
                 </div>
-                <label for="habitos">Outros hábitos</label>
-                <textarea id="habitos" rows="3" placeholder="Ex.: alimentação, sono e rotina"></textarea>
-                <label for="objetivo">Principal objetivo</label>
-                <select id="objetivo">
-                    <option>Organizar consultas e exames</option>
-                    <option>Acompanhar vacinas</option>
-                    <option>Reunir informações de saúde</option>
-                </select>
-                <button type="button" disabled>Salvar perfil (em breve)</button>
+
+                <button type="submit">Salvar perfil</button>
             </form>
         </section>
     </main>
+
     <footer>MedMap - seu mapa de saúde preventiva</footer>
 </body>
 </html>

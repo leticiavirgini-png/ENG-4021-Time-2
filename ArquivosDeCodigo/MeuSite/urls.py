@@ -49,6 +49,7 @@ urlpatterns = [
         name='RemocaoUsuario'
     ),
     
+    path('login/', views.Tela, name='Login'),
     path('Tela/', views.Tela, name='Tela'), 
 
     path('HistoricoFamiliar/', views.HistoricoFamiliar, name='HistoricoFamiliar' ),

@@ -138,3 +138,16 @@ footer{
     }
 
 }
+button:hover { background: #0b5046; }
+.mensagem {
+    padding: 10px 12px;
+    color: #0f675b;
+    background: #e6f6ef;
+    border-radius: 5px;
+}
+.erro {
+    padding: 10px 12px;
+    color: #9b2c2c;
+    background: #fff0f0;
+    border-radius: 5px;
+}
