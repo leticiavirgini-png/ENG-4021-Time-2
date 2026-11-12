@@ -227,7 +227,36 @@ def Tela(request):
 
 def HistoricoFamiliar(request):
 
-    return render(request, 'HistoricoFamiliar.html')
+    usuario_id = request.session.get('usuario_id')
+
+    if not usuario_id:
+        return redirect('Tela')
+
+    perfil = Perfil.objects.filter(usuario_id=usuario_id).first()
+
+    if not perfil:
+        return render(request, 'HistoricoFamiliar.html', {
+            'erro': 'Preencha o seu Perfil de saúde antes de adicionar o histórico familiar.'
+        })
+
+    if request.method == 'POST':
+        remover_id = request.POST.get('remover')
+
+        if remover_id:
+            HistoricoFamiliarModel.objects.filter(id=remover_id, perfil=perfil).delete()
+        else:
+            HistoricoFamiliarModel.objects.create(
+                perfil=perfil,
+                parente=request.POST.get('parente'),
+                doenca=request.POST.get('doenca'),
+                idade_diagnostico=request.POST.get('idade') or None
+            )
+
+        return redirect('HistoricoFamiliar')
+
+    historicos = HistoricoFamiliarModel.objects.filter(perfil=perfil)
+
+    return render(request, 'HistoricoFamiliar.html', {'historicos': historicos})
 
 def CheckupInteligente(request):
     return render(request, 'CheckupInteligente.html')
@@ -240,8 +269,13 @@ def ListarUsuarios(request):
 
 
 def CalendarioCuidados(request):
-    
-    cuidados = Cuidado.objects.all()
+
+    usuario_id = request.session.get('usuario_id')
+
+    if not usuario_id:
+        return redirect('Tela')
+
+    cuidados = Cuidado.objects.filter(perfil__usuario_id=usuario_id)
     tipos_validos = ('Consulta', 'Exame', 'Vacina')
 
     tipo = request.GET.get('tipo', '')
@@ -425,7 +459,14 @@ def RelatorioPreventivo(request):
 
 def Familiares(request):
 
-    return render(request, 'Familiares.html')
+    usuario_id = request.session.get('usuario_id')
+
+    if not usuario_id:
+        return redirect('Tela')
+
+    familiares = HistoricoFamiliarModel.objects.filter(perfil__usuario_id=usuario_id)
+
+    return render(request, 'Familiares.html', {'familiares': familiares})
 
 
 def CadastroCuidados(request):
