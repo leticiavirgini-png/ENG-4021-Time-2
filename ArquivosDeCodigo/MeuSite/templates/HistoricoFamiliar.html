@@ -33,7 +33,12 @@
 
                 <h2>Adicionar informação</h2>
 
-                <form>
+                {% if erro %}
+                    <p class="erro">{{ erro }}</p>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
 
                     <label for="parente">Parentesco</label>
                     <select id="parente" name="parente" required>
@@ -49,13 +54,17 @@
                     </select>
 
                     <label for="doenca">Doença</label>
-                    <input
-                        type="text"
-                        id="doenca"
-                        name="doenca"
-                        placeholder="Ex.: Diabetes"
-                        required
-                    >
+                    <select id="doenca" name="doenca" required>
+                        <option value="">Selecione uma doença</option>
+                        <option value="Hipertensão">Hipertensão</option>
+                        <option value="Diabetes tipo 2">Diabetes tipo 2</option>
+                        <option value="Colesterol alto">Colesterol alto</option>
+                        <option value="Infarto ou AVC">Infarto ou AVC</option>
+                        <option value="Câncer de mama">Câncer de mama</option>
+                        <option value="Câncer de intestino">Câncer de intestino</option>
+                        <option value="Câncer de próstata">Câncer de próstata</option>
+                        <option value="Osteoporose">Osteoporose</option>
+                    </select>
 
                     <label for="idade">Idade no diagnóstico</label>
                     <input
@@ -78,35 +87,22 @@
 
             <div id="lista-historico">
 
+                {% for historico in historicos %}
                 <div class="registro">
                     <div>
-                        <h3>Avó materna</h3>
-                        <p><strong>Doença:</strong> Diabetes</p>
-                        <p><strong>Idade no diagnóstico:</strong> 60 anos</p>
+                        <h3>{{ historico.parente }}</h3>
+                        <p><strong>Doença:</strong> {{ historico.doenca }}</p>
+                        <p><strong>Idade no diagnóstico:</strong> {{ historico.idade_diagnostico }} anos</p>
                     </div>
 
-                    <button type="button" class="remover">Remover</button>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button type="submit" name="remover" value="{{ historico.id }}" class="remover">Remover</button>
+                    </form>
                 </div>
-
-                <div class="registro">
-                    <div>
-                        <h3>Pai</h3>
-                        <p><strong>Doença:</strong> Hipertensão</p>
-                        <p><strong>Idade no diagnóstico:</strong> 45 anos</p>
-                    </div>
-
-                    <button type="button" class="remover">Remover</button>
-                </div>
-
-                <div class="registro">
-                    <div>
-                        <h3>Avô paterno</h3>
-                        <p><strong>Doença:</strong> Colesterol alto</p>
-                        <p><strong>Idade no diagnóstico:</strong> 55 anos</p>
-                    </div>
-
-                    <button type="button" class="remover">Remover</button>
-                </div>
+                {% empty %}
+                <p>Nenhuma informação registrada ainda.</p>
+                {% endfor %}
 
             </div>
 

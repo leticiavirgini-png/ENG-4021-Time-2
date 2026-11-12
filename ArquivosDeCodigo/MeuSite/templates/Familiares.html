@@ -31,6 +31,7 @@
 
             <h2>Familiares cadastrados</h2>
 
+            {% for familiar in familiares %}
                 <div class="familiar">
                     <h3>{{ familiar.parente }}</h3>
 
@@ -44,12 +45,13 @@
                         {{ familiar.idade_diagnostico }} anos
                     </p>
                 </div>
-
+            {% empty %}
                 <div class="sem-familiares">
                     <h3>Nenhum familiar cadastrado ainda.</h3>
                     <p>Comece adicionando informações sobre a saúde da sua família.</p>
                     <a href="{% url 'HistoricoFamiliar' %}">Adicionar primeiro familiar</a>
                 </div>
+            {% endfor %}
 
             <p class="aviso">
                 As informações registradas ajudam a organizar o histórico de saúde familiar.
