@@ -18,35 +18,28 @@
     </nav>
     <main>
         <h1>Check-up Inteligente</h1>
-        <p>Veja como seus cuidados preventivos poderão ser organizados em um só lugar.</p>
-        <section class="aviso">
-            <strong>Exemplo de interface:</strong> os itens abaixo são ilustrativos.
-            O sistema ainda não faz recomendações com base em dados de saúde.
-        </section>
+        <p>Recomendações para {{ perfil.nome }}, {{ idade }} anos, de acordo com o seu perfil, o seu histórico familiar e os seus hábitos.</p>
+
+        <form method="GET" class="habitos">
+            <h2>Seus hábitos</h2>
+            <label><input type="checkbox" name="fuma" value="sim" {% if fuma %}checked{% endif %}> Fumo</label>
+            <label><input type="checkbox" name="bebe" value="sim" {% if bebe %}checked{% endif %}> Bebo álcool com frequência</label>
+            <label><input type="checkbox" name="sedentario" value="sim" {% if sedentario %}checked{% endif %}> Não pratico atividade física</label>
+            <button type="submit">Atualizar</button>
+        </form>
+
         <section class="cuidados">
-            <h2>Categorias de acompanhamento</h2>
-            <div class="lista">
+            <h2>Recomendações</h2>
+            {% for recomendacao in recomendacoes %}
                 <article class="cartao">
-                    <span class="categoria">Consultas</span>
-                    <h3>Acompanhamento de rotina</h3>
-                    <p>Converse com um profissional de saúde para avaliar seus cuidados.</p>
-                    <p class="situacao">Situação: exemplo</p>
+                    <p>{{ recomendacao }}</p>
                 </article>
-                <article class="cartao">
-                    <span class="categoria">Exames</span>
-                    <h3>Exames preventivos</h3>
-                    <p>A necessidade de exames depende de avaliação individual.</p>
-                    <p class="situacao">Situação: exemplo</p>
-                </article>
-                <article class="cartao">
-                    <span class="categoria">Vacinas</span>
-                    <h3>Carteira de vacinação</h3>
-                    <p>Organize o acompanhamento das vacinas registradas.</p>
-                    <p class="situacao">Situação: exemplo</p>
-                </article>
-            </div>
+            {% empty %}
+                <p>Nenhuma recomendação para o seu perfil no momento.</p>
+            {% endfor %}
         </section>
-        <p class="rodape-aviso">O Check-up Inteligente terá regras próprias em uma etapa futura. Esta página não substitui orientação médica.</p>
+
+        <p class="rodape-aviso">As recomendações seguem diretrizes do Ministério da Saúde, do INCA e de sociedades médicas. Esta página não substitui orientação médica.</p>
     </main>
     <footer>MedMap - seu mapa de saúde preventiva</footer>
 </body>
