@@ -235,24 +235,15 @@ def HistoricoFamiliar(request):
     perfil = Perfil.objects.filter(usuario_id=usuario_id).first()
 
     if not perfil:
-        return render(request, 'HistoricoFamiliar.html', {
-            'erro': 'Preencha o seu Perfil de saúde antes de adicionar o histórico familiar.'
-        })
+        return redirect('PerfilSaude')
 
     if request.method == 'POST':
-        remover_id = request.POST.get('remover')
-
-        if remover_id:
-            HistoricoFamiliarModel.objects.filter(id=remover_id, perfil=perfil).delete()
-        else:
-            HistoricoFamiliarModel.objects.create(
-                perfil=perfil,
-                parente=request.POST.get('parente'),
-                doenca=request.POST.get('doenca'),
-                idade_diagnostico=request.POST.get('idade') or None
-            )
-
-        return redirect('HistoricoFamiliar')
+        HistoricoFamiliarModel.objects.create(
+            perfil=perfil,
+            parente=request.POST.get('parente'),
+            doenca=request.POST.get('doenca'),
+            idade_diagnostico=request.POST.get('idade')
+        )
 
     historicos = HistoricoFamiliarModel.objects.filter(perfil=perfil)
 
@@ -271,11 +262,9 @@ def ListarUsuarios(request):
 def CalendarioCuidados(request):
 
     usuario_id = request.session.get('usuario_id')
+    perfil = Perfil.objects.filter(usuario_id=usuario_id).first()
 
-    if not usuario_id:
-        return redirect('Tela')
-
-    cuidados = Cuidado.objects.filter(perfil__usuario_id=usuario_id)
+    cuidados = Cuidado.objects.filter(perfil=perfil)
     tipos_validos = ('Consulta', 'Exame', 'Vacina')
 
     tipo = request.GET.get('tipo', '')
@@ -460,11 +449,9 @@ def RelatorioPreventivo(request):
 def Familiares(request):
 
     usuario_id = request.session.get('usuario_id')
+    perfil = Perfil.objects.filter(usuario_id=usuario_id).first()
 
-    if not usuario_id:
-        return redirect('Tela')
-
-    familiares = HistoricoFamiliarModel.objects.filter(perfil__usuario_id=usuario_id)
+    familiares = HistoricoFamiliarModel.objects.filter(perfil=perfil)
 
     return render(request, 'Familiares.html', {'familiares': familiares})
 
