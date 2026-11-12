@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.hashers import check_password, make_password
 from datetime import date
 from django.utils.dateparse import parse_date
-from banco_de_dados.models import Usuario, Cuidado
+from banco_de_dados.models import Usuario, Perfil, HistoricoFamiliar as HistoricoFamiliarModel, Cuidado
 
 def home(request):
     '''
@@ -12,7 +12,47 @@ def home(request):
     return render(request, 'home.html')
 
 def PerfilSaude(request):
-    return render(request, 'PerfilSaude.html')
+    usuario_id = request.session.get('usuario_id')
+
+    if not usuario_id:
+        return redirect('Login')
+
+    usuario = get_object_or_404(Usuario, id=usuario_id)
+    perfil = Perfil.objects.filter(usuario=usuario).first()
+    mensagem = ''
+    erro = ''
+
+    if request.method == 'POST':
+        nome = request.POST.get('nome', '').strip()
+        data_nascimento = parse_date(
+            request.POST.get('data_nascimento', '')
+        )
+        sexo = request.POST.get('sexo', '').strip()
+
+        if not nome or not data_nascimento or not sexo:
+            erro = 'Preencha todos os campos do perfil.'
+        else:
+            if perfil:
+                perfil.nome = nome
+                perfil.data_nascimento = data_nascimento
+                perfil.sexo = sexo
+                perfil.save()
+            else:
+                perfil = Perfil.objects.create(
+                    usuario=usuario,
+                    nome=nome,
+                    data_nascimento=data_nascimento,
+                    sexo=sexo
+                )
+
+            mensagem = 'Perfil salvo com sucesso.'
+
+    return render(request, 'PerfilSaude.html', {
+        'usuario': usuario,
+        'perfil': perfil,
+        'mensagem': mensagem,
+        'erro': erro
+    })
 
 def ComoUsar(request):
 
@@ -259,7 +299,129 @@ def CalendarioCuidados(request):
     return render(request, 'CalendarioCuidados.html', contexto)
 
 def RelatorioPreventivo(request):
-    return render(request, 'RelatorioPreventivo.html')
+    usuario_id = request.session.get('usuario_id')
+
+    if not usuario_id:
+        return redirect('Login')
+
+    usuario = get_object_or_404(Usuario, id=usuario_id)
+    perfil = Perfil.objects.filter(usuario=usuario).first()
+    mensagem = ''
+    erro = ''
+
+    if request.method == 'POST':
+        if not perfil:
+            erro = 'Cadastre o perfil de saúde antes de alterar o relatório.'
+        else:
+            acao = request.POST.get('acao', '')
+
+            if acao == 'editar_historico':
+                historico = get_object_or_404(
+                    HistoricoFamiliarModel,
+                    id=request.POST.get('historico_id'),
+                    perfil=perfil
+                )
+                parente = request.POST.get('parente', '').strip()
+                doenca = request.POST.get('doenca', '').strip()
+                idade_texto = request.POST.get('idade_diagnostico', '').strip()
+
+                try:
+                    idade = int(idade_texto) if idade_texto else None
+                except ValueError:
+                    idade = -1
+
+                if not parente or not doenca:
+                    erro = 'Informe o parentesco e a condição de saúde.'
+                elif idade is not None and (idade < 0 or idade > 120):
+                    erro = 'A idade no diagnóstico deve estar entre 0 e 120 anos.'
+                else:
+                    historico.parente = parente
+                    historico.doenca = doenca
+                    historico.idade_diagnostico = idade
+                    historico.save()
+                    mensagem = 'Histórico familiar atualizado com sucesso.'
+
+            elif acao == 'adicionar_historico':
+                parente = request.POST.get('parente', '').strip()
+                doenca = request.POST.get('doenca', '').strip()
+                idade_texto = request.POST.get('idade_diagnostico', '').strip()
+
+                try:
+                    idade = int(idade_texto) if idade_texto else None
+                except ValueError:
+                    idade = -1
+
+                if not parente or not doenca:
+                    erro = 'Informe o parentesco e a condição de saúde.'
+                elif idade is not None and (idade < 0 or idade > 120):
+                    erro = 'A idade no diagnóstico deve estar entre 0 e 120 anos.'
+                else:
+                    HistoricoFamiliarModel.objects.create(
+                        perfil=perfil,
+                        parente=parente,
+                        doenca=doenca,
+                        idade_diagnostico=idade
+                    )
+                    mensagem = 'Histórico familiar adicionado com sucesso.'
+
+            elif acao == 'editar_cuidado':
+                cuidado = get_object_or_404(
+                    Cuidado,
+                    id=request.POST.get('cuidado_id'),
+                    perfil=perfil
+                )
+                tipo = request.POST.get('tipo', '').strip()
+                nome = request.POST.get('nome', '').strip()
+                data_cuidado = parse_date(request.POST.get('data', ''))
+                tipos_validos = ('Consulta', 'Exame', 'Vacina')
+
+                if tipo not in tipos_validos or not nome or not data_cuidado:
+                    erro = 'Preencha corretamente o tipo, o cuidado e a data.'
+                else:
+                    cuidado.tipo = tipo
+                    cuidado.nome = nome
+                    cuidado.data = data_cuidado
+                    cuidado.save()
+                    mensagem = 'Cuidado atualizado com sucesso.'
+
+            elif acao == 'adicionar_cuidado':
+                tipo = request.POST.get('tipo', '').strip()
+                nome = request.POST.get('nome', '').strip()
+                data_cuidado = parse_date(request.POST.get('data', ''))
+                tipos_validos = ('Consulta', 'Exame', 'Vacina')
+
+                if tipo not in tipos_validos or not nome or not data_cuidado:
+                    erro = 'Preencha corretamente o tipo, o cuidado e a data.'
+                else:
+                    Cuidado.objects.create(
+                        perfil=perfil,
+                        tipo=tipo,
+                        nome=nome,
+                        data=data_cuidado
+                    )
+                    mensagem = 'Cuidado adicionado com sucesso.'
+            else:
+                erro = 'Não foi possível identificar a alteração solicitada.'
+
+    if perfil:
+        historicos = HistoricoFamiliarModel.objects.filter(
+            perfil=perfil
+        ).order_by('parente', 'doenca')
+        cuidados = Cuidado.objects.filter(
+            perfil=perfil
+        ).order_by('data')
+    else:
+        historicos = HistoricoFamiliarModel.objects.none()
+        cuidados = Cuidado.objects.none()
+
+    return render(request, 'RelatorioPreventivo.html', {
+        'usuario': usuario,
+        'perfil': perfil,
+        'historicos': historicos,
+        'cuidados': cuidados,
+        'mensagem': mensagem,
+        'erro': erro
+    })
 
 def Familiares(request):
 

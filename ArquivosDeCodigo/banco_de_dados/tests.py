@@ -3,7 +3,7 @@ from datetime import date
 from django.test import TestCase
 from django.urls import reverse
 
-from banco_de_dados.models import Cuidado, Perfil, Usuario
+from banco_de_dados.models import Cuidado, HistoricoFamiliar, Perfil, Usuario
 
 
 class TestesFiltrosCalendario(TestCase):
@@ -76,3 +76,128 @@ class TestesFiltrosCalendario(TestCase):
                                   {'inicio': '2026-02-30'})
         self.assertEqual(resposta.status_code, 200)
         self.assertContains(resposta, 'data inicial informada')
+
+
+
+class TestesEdicaoRelatorioPreventivo(TestCase):
+    def setUp(self):
+        self.usuario = Usuario.objects.create(
+            nome='Usuário Relatório',
+            email='relatorio@medmap.com',
+            senha='teste'
+        )
+        self.perfil = Perfil.objects.create(
+            usuario=self.usuario,
+            nome='Usuário Relatório',
+            data_nascimento=date(1990, 1, 1),
+            sexo='Não informado'
+        )
+        self.historico = HistoricoFamiliar.objects.create(
+            perfil=self.perfil,
+            parente='Pai',
+            doenca='Hipertensão',
+            idade_diagnostico=45
+        )
+        self.cuidado = Cuidado.objects.create(
+            perfil=self.perfil,
+            tipo='Consulta',
+            nome='Clínico geral',
+            data=date(2026, 11, 10)
+        )
+        sessao = self.client.session
+        sessao['usuario_id'] = self.usuario.id
+        sessao.save()
+
+    def test_edita_historico_familiar(self):
+        resposta = self.client.post(reverse('RelatorioPreventivo'), {
+            'acao': 'editar_historico',
+            'historico_id': self.historico.id,
+            'parente': 'Mãe',
+            'doenca': 'Diabetes',
+            'idade_diagnostico': '50'
+        })
+
+        self.historico.refresh_from_db()
+        self.assertEqual(resposta.status_code, 200)
+        self.assertEqual(self.historico.parente, 'Mãe')
+        self.assertEqual(self.historico.doenca, 'Diabetes')
+        self.assertEqual(self.historico.idade_diagnostico, 50)
+        self.assertContains(resposta, 'Histórico familiar atualizado')
+
+    def test_adiciona_historico_familiar_pelo_relatorio(self):
+        resposta = self.client.post(reverse('RelatorioPreventivo'), {
+            'acao': 'adicionar_historico',
+            'parente': 'Avó materna',
+            'doenca': 'Diabetes',
+            'idade_diagnostico': '60'
+        })
+
+        novo = HistoricoFamiliar.objects.get(
+            perfil=self.perfil,
+            parente='Avó materna'
+        )
+        self.assertEqual(resposta.status_code, 200)
+        self.assertEqual(novo.doenca, 'Diabetes')
+        self.assertContains(resposta, 'Histórico familiar adicionado')
+
+    def test_edita_cuidado(self):
+        resposta = self.client.post(reverse('RelatorioPreventivo'), {
+            'acao': 'editar_cuidado',
+            'cuidado_id': self.cuidado.id,
+            'tipo': 'Exame',
+            'nome': 'Hemograma',
+            'data': '2026-12-01'
+        })
+
+        self.cuidado.refresh_from_db()
+        self.assertEqual(resposta.status_code, 200)
+        self.assertEqual(self.cuidado.tipo, 'Exame')
+        self.assertEqual(self.cuidado.nome, 'Hemograma')
+        self.assertEqual(self.cuidado.data, date(2026, 12, 1))
+        self.assertContains(resposta, 'Cuidado atualizado com sucesso')
+
+    def test_adiciona_cuidado_pelo_relatorio(self):
+        resposta = self.client.post(reverse('RelatorioPreventivo'), {
+            'acao': 'adicionar_cuidado',
+            'tipo': 'Vacina',
+            'nome': 'Vacina da gripe',
+            'data': '2026-11-20'
+        })
+
+        novo = Cuidado.objects.get(
+            perfil=self.perfil,
+            nome='Vacina da gripe'
+        )
+        self.assertEqual(resposta.status_code, 200)
+        self.assertEqual(novo.tipo, 'Vacina')
+        self.assertContains(resposta, 'Cuidado adicionado com sucesso')
+
+    def test_nao_edita_historico_de_outro_perfil(self):
+        outro_usuario = Usuario.objects.create(
+            nome='Outro Usuário',
+            email='outro@medmap.com',
+            senha='teste'
+        )
+        outro_perfil = Perfil.objects.create(
+            usuario=outro_usuario,
+            nome='Outro Usuário',
+            data_nascimento=date(1985, 1, 1),
+            sexo='Não informado'
+        )
+        historico_alheio = HistoricoFamiliar.objects.create(
+            perfil=outro_perfil,
+            parente='Pai',
+            doenca='Asma'
+        )
+
+        resposta = self.client.post(reverse('RelatorioPreventivo'), {
+            'acao': 'editar_historico',
+            'historico_id': historico_alheio.id,
+            'parente': 'Mãe',
+            'doenca': 'Diabetes',
+            'idade_diagnostico': '40'
+        })
+
+        historico_alheio.refresh_from_db()
+        self.assertEqual(resposta.status_code, 404)
+        self.assertEqual(historico_alheio.doenca, 'Asma')
