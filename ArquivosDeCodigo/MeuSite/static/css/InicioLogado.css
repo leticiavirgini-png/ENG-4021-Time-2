@@ -205,3 +205,39 @@ footer {
         min-height: 190px;
     }
 }
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.btn-sair{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 10px 20px;
+
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 25px;
+
+    transition: all 0.3s ease;
+}
+
+.icone-sair {
+    font-size: 19px;
+    transition: transform 0.3s ease;
+}
+
+.btn-sair:hover .icone-sair{
+    transform: translateX(3px);
+    
+}
