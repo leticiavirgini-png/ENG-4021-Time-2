@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -6,10 +10,10 @@ body {
 }
 
 nav{
-    padding:18px 30px;
+    padding: 20px;
     background:#0f675b;
     color:white;
-    display:flex;
+    display: flex;
     justify-content:space-between;
     align-items:center;
 }
