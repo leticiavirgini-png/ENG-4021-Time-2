@@ -6,60 +6,45 @@ body {
     margin: 0;
     background-color: #f7fbf8;
     color: #173d37;
-    font-family: "Poppins", Arial, sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 nav {
-    height: 75px;
     background-color: #0f675b;
-    font-size: 50px;
     display: flex;
-    align-items: center;
+    color: white;
+    padding: 20px;
     justify-content: space-between;
-
-    padding: 0 6%;
-
-    box-shadow: 0 4px 15px rgba(15, 103, 91, 0.20);
+    align-items: center;
 }
 
+nav h2 {
+    margin: 0;
+}
 .logo {
     margin: 0;
     color: white;
-
     font-size: 20px;
-    font-weight: bold;
 }
 
 .navegacao {
     display: flex;
-    gap: 10px;
+    gap: 20px;
 
     margin: 0;
     padding: 0;
 
-    list-style: none;
+    list-style-type: none;
 }
 
 .navegacao a {
-    display: block;
-
     color: white;
     text-decoration: none;
-
-    padding: 11px 18px;
-
-    border-radius: 8px;
-
-    font-size: 17px;
-    font-weight: bold;
-
-    transition: 0.25s;
 }
 
 .navegacao a:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-
-    transform: scale(1.05);
+    color: white;
+    text-decoration: underline;
 }
 
 main {

@@ -8,7 +8,7 @@ body {
     color: #173d37;
 }
 nav{
-    padding:18px 30px;
+    padding:20px;
     background:#0f675b;
     color:white;
     display:flex;
@@ -24,6 +24,9 @@ nav h2{
 .navegacao{
     display:flex;
     gap:20px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .navegacao a{
@@ -119,9 +122,10 @@ footer{
 @media(max-width:700px){
 
     nav{
-        flex-direction:column;
-        gap:15px;
-        text-align:center;
+        flex-direction:row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
     }
 
     .navegacao{

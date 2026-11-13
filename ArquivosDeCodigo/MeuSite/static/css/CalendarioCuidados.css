@@ -18,14 +18,17 @@ nav{
     align-items:center;
 }
 
-nav h2{
-    margin:0;
+nav h2 {
+    margin: 0;
     color:white;
 }
 
 .navegacao{
     display:flex;
     gap:20px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .navegacao a{

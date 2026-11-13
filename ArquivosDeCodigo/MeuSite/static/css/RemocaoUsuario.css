@@ -7,15 +7,24 @@ body {
 
 nav {
     background-color: #0f675b;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 nav h2 {
     color: white;
-    margin-left: 39px;
+    margin: 0;
 }
 
 .navegacao {
+    display: flex;
+    gap: 20px;
     list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .navegacao a {
