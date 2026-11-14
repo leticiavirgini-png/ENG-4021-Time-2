@@ -68,4 +68,10 @@ urlpatterns = [
     path('CadastroCuidados/', views.CadastroCuidados, name='CadastroCuidados'),
 
     path('InicioLogado/', views.InicioLogado, name='InicioLogado'),
+
+    path('TrocarConta/', views.TrocarConta, name='TrocarConta'),
+
+
+    path('Sair/', views.Sair, name='Sair'),
+
 ]
