@@ -16,11 +16,54 @@
         <h2>MedMap</h2>
 
         <div class="logo">
+            <details class="trocar-conta">
+                <summary>Trocar de conta</summary>
 
-            <a href="{% url 'home' %}" class="btn-sair">
+                <div class="menu-contas">
+                    <p>Contas utilizadas</p>
+
+                    
+{% if erro_troca %}
+    <p class="erro-troca">{{ erro_troca }}</p>
+{% endif %}
+
+{% for conta in contas_utilizadas %}
+    <div class="conta-item">
+        <span>{{ conta.nome }}</span>
+        <small>{{ conta.email }}</small>
+
+        {% if conta.id == usuario.id %}
+            <span>Conta atual</span>
+        {% else %}
+            <form method="POST" action="{% url 'TrocarConta' %}">
+                {% csrf_token %}
+                <input type="hidden" name="conta_id" value="{{ conta.id }}">
+
+                <input
+                    type="password"
+                    name="senha"
+                    placeholder="Senha desta conta"
+                    aria-label="Senha de {{ conta.nome }}"
+                    required
+                >
+
+                <button type="submit">Entrar nesta conta</button>
+            </form>
+        {% endif %}
+    </div>
+{% empty %}
+    <p>Nenhuma conta encontrada.</p>
+{% endfor %}
+
+                </div>
+            </details>
+
+            
+            <a href="{% url 'Sair' %}" class="btn-sair">
                 <span class="icone-sair">↪</span>
                 Sair
             </a>
+
 
             <img src="{% static 'Imagens/logo.png' %}" alt="Logo MedMap">
         </div>

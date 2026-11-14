@@ -107,6 +107,10 @@ def CriarConta(request):
             email=email,
             senha=make_password(senha)
         )
+        contas=request.session.get('contas_utilizadas',[])
+        if usuario.id not in contas:
+            contas.append(usuario.id)
+        request.session['contas_utilizadas']=contas
         request.session['usuario_id'] = usuario.id
         return redirect('InicioLogado')
 
@@ -118,7 +122,16 @@ def Artigos (request):
 
     return render(request, 'Artigos.html')
 
+
 def EdicaoUsuario(request, usuario_id):
+
+    usuario_logado_id = request.session.get('usuario_id')
+
+    if not usuario_logado_id:
+        return redirect('Tela')
+
+    if usuario_id != usuario_logado_id:
+        return redirect('InicioLogado')
 
     usuario = get_object_or_404(Usuario, id=usuario_id)
 
@@ -169,7 +182,16 @@ def EdicaoUsuario(request, usuario_id):
 def PreferenciasNotificacoes(request):
     return render(request, 'PreferenciasNotificacoes.html')
 
+
 def RemocaoUsuario(request, usuario_id):
+
+    usuario_logado_id = request.session.get('usuario_id')
+
+    if not usuario_logado_id:
+        return redirect('Tela')
+
+    if usuario_id != usuario_logado_id:
+        return redirect('InicioLogado')
 
     usuario = get_object_or_404(Usuario, id=usuario_id)
 
@@ -218,6 +240,12 @@ def Tela(request):
         usuario = Usuario.objects.filter(email=email).first()
 
         if usuario and check_password(senha, usuario.senha):
+            contas=request.session.get('contas_utilizadas',[])
+
+            if usuario.id not in contas:
+                contas.append(usuario.id)
+
+            request.session['contas_utilizadas']=contas
             request.session['usuario_id'] = usuario.id
             return redirect('InicioLogado')
 
@@ -355,11 +383,18 @@ def CheckupInteligente(request):
         'sedentario': sedentario
     })
 
+
 def ListarUsuarios(request):
+    usuario_id = request.session.get('usuario_id')
 
-    usuarios = Usuario.objects.all()
+    if not usuario_id:
+        return redirect('Tela')
 
-    return render(request, 'ListarUsuarios.html', {'usuarios': usuarios})
+    usuarios = Usuario.objects.filter(id=usuario_id)
+
+    return render(request, 'ListarUsuarios.html', {
+        'usuarios': usuarios
+    })
 
 
 def CalendarioCuidados(request):
@@ -566,15 +601,58 @@ def InicioLogado(request):
     usuario_id = request.session.get('usuario_id')
     if not usuario_id:
         return redirect('Tela')
-
     usuario = get_object_or_404(Usuario, id=usuario_id)
-    perfil = Perfil.objects.filter(usuario=usuario).first()
-
-    proximos_cuidados = Cuidado.objects.filter(
-        perfil=perfil, data__gte=date.today(), concluido=False
-    ).order_by('data', 'id')[:3]
+    contas_ids=request.session.get('contas_utilizadas',[])
+    contas_utilizadas=Usuario.objects.filter(
+        id__in=contas_ids
+    )
 
     return render(request, 'InicioLogado.html', {
         'usuario': usuario,
-        'proximos_cuidados': proximos_cuidados
+        'contas_utilizadas': contas_utilizadas
     })
+
+def TrocarConta(request):
+    usuario_id = request.session.get('usuario_id')
+
+    if not usuario_id:
+        return redirect('Tela')
+
+    if request.method != 'POST':
+        return redirect('InicioLogado')
+
+    conta_id = request.POST.get('conta_id')
+    senha = request.POST.get('senha', '')
+
+    contas_ids = request.session.get('contas_utilizadas', [])
+
+    try:
+        conta_id = int(conta_id)
+    except (TypeError, ValueError):
+        return redirect('InicioLogado')
+
+    if conta_id not in contas_ids:
+        return redirect('InicioLogado')
+
+    conta = Usuario.objects.filter(id=conta_id).first()
+
+    if not conta or not check_password(senha, conta.senha):
+        return render(request, 'InicioLogado.html', {
+            'usuario': get_object_or_404(Usuario, id=usuario_id),
+            'contas_utilizadas': Usuario.objects.filter(id__in=contas_ids),
+            'erro_troca': 'Senha incorreta. Tente novamente.'
+        })
+
+    request.session.cycle_key()
+    request.session['usuario_id'] = conta.id
+
+    return redirect('InicioLogado')
+
+def Sair(request):
+    contas = request.session.get('contas_utilizadas', [])
+
+    request.session.flush()
+
+    request.session['contas_utilizadas'] = contas
+
+    return redirect('home')

@@ -256,3 +256,91 @@ nav {
 .btn-sair {
     padding: 7px 15px;
 }
+
+.trocar-conta {
+    position: relative;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.trocar-conta summary{
+    cursor: pointer;
+    list-style: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.trocar-conta summary:hover{
+    text-decoration: underline;
+}
+
+.menu-contas{
+    position: absolute;
+    top: calc(100% + 15px);
+    right: 0;
+    width: 260px;
+    background-color: white;
+    color: #173d37;
+    border: 1px solid #dbe7e2;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    z-index: 1000;
+}
+
+.menu-contas p {
+    margin: 0 0 12px;
+    font-weight: bold;
+}
+
+.conta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px 0;
+    border-bottom: 1px solid #dbe7e2;
+}
+
+.conta-item:last-child{
+    border-bottom: none;
+}
+
+.conta-item small {
+    color: #668078
+}
+
+
+.conta-item form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.conta-item input[type="password"] {
+    width: 100%;
+    padding: 9px;
+    border: 1px solid #dbe7e2;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+}
+
+.conta-item button {
+    background-color: #0f675b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.conta-item button:hover {
+    background-color: #0b5048;
+}
+
+.erro-troca {
+    color: #b3261e;
+    font-size: 13px;
+}
