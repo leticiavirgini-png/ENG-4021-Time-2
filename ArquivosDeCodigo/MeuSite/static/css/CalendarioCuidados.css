@@ -187,3 +187,24 @@ footer {
     .cuidado { align-items: flex-start; flex-direction: column; gap: 12px; }
     .acoes-cuidado, .form-conclusao { margin-left: 0; align-items: flex-start; }
 }
+.cadastro-principal {
+    display: flex;
+    justify-content: center;
+    margin: 25px 0;
+}
+
+.cadastro-principal a {
+    display: inline-block;
+    padding: 14px 25px;
+    background: #0f675b;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.cadastro-principal a:hover {
+    background: #0b5048;
+    transform: translateY(-3px);
+}

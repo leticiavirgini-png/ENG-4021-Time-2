@@ -93,6 +93,20 @@
                 </div>
                 {% empty %}
                 <p>Nenhuma informação registrada ainda.</p>
+                <form method="POST">
+                   {% csrf_token %}
+
+                   <input type="hidden" name="acao" value="excluir">
+                   <input
+                      type="hidden"
+                      name="historico_id"
+                      value="{{ historico.id }}"
+                   >
+
+                   <button type="submit">
+                      Remover
+                   </button>
+                </form>
                 {% endfor %}
 
             </div>
