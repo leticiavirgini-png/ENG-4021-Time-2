@@ -61,18 +61,42 @@
         <p class="total-cuidados">{{ total_cuidados }} cuidado(s) encontrado(s).</p>
 
         {% for cuidado in cuidados %}
-        <div class="cuidado">
-            <div>
-                <h3>{{ cuidado.nome }}</h3>
+        <div class="cuidado{% if cuidado.concluido %} concluido{% endif %}">
+            <div class="dados-cuidado">
+                <h3>{% if cuidado.concluido %}✓ {% endif %}{{ cuidado.nome }}</h3>
                 <p>{{ cuidado.tipo }} - {{ cuidado.data|date:"d/m/Y" }}</p>
             </div>
-            {% if cuidado.data < hoje %}
-                <span class="atrasado">Data passada</span>
-            {% elif cuidado.data == hoje %}
-                <span class="hoje">Hoje</span>
-            {% else %}
-                <span class="programado">Programado</span>
-            {% endif %}
+            <div class="acoes-cuidado">
+                {% if cuidado.concluido %}
+                    <span class="feito">✓ Feito</span>
+                    <form method="post" action="{% url 'AtualizarCuidado' cuidado.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="acao" value="desfazer">
+                        <button class="botao-secundario" type="submit">Desfazer</button>
+                    </form>
+                {% else %}
+                    {% if cuidado.data < hoje %}
+                        <span class="atrasado">Data passada</span>
+                    {% elif cuidado.data == hoje %}
+                        <span class="hoje">Hoje</span>
+                    {% else %}
+                        <span class="programado">Programado</span>
+                    {% endif %}
+                    <form method="post" action="{% url 'AtualizarCuidado' cuidado.id %}" class="form-conclusao">
+                        {% csrf_token %}
+                        <input type="hidden" name="acao" value="concluir">
+                        <label for="meses-{{ cuidado.id }}">Próximo agendamento (opcional)</label>
+                        <select name="meses" id="meses-{{ cuidado.id }}">
+                            <option value="0">Não reagendar</option>
+                            <option value="1">Em 1 mês</option>
+                            <option value="3">Em 3 meses</option>
+                            <option value="6">Em 6 meses</option>
+                            <option value="12">Em 12 meses</option>
+                        </select>
+                        <button type="submit">✓ Marcar como feito</button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
         {% empty %}
         <p>Nenhum cuidado cadastrado.</p>

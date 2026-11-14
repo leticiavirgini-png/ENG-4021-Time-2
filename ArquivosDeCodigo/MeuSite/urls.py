@@ -17,9 +17,11 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from MeuSite import views 
+from MeuSite import views
+from MeuSite import cuidados_actions 
 
 urlpatterns = [
+    path('Cuidados/<int:cuidado_id>/atualizar/', cuidados_actions.atualizar_cuidado, name='AtualizarCuidado'),
     path("admin/", admin.site.urls),
 
     path('', views.home, name='home'),

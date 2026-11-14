@@ -137,3 +137,53 @@ footer {
     .campos-filtro { grid-template-columns: 1fr; }
     .filtros { padding: 15px; }
 }
+
+/* Conclusão de cuidados - Sprint 9 */
+.cuidado.concluido {
+    background: #e5f6ee;
+    border-color: #75b99b;
+}
+.cuidado.concluido .dados-cuidado h3 {
+    text-decoration: line-through;
+    color: #4d7767;
+}
+.acoes-cuidado {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    margin-left: 15px;
+}
+.feito {
+    background: #c9ebd8;
+    color: #12603d;
+    border-radius: 5px;
+    padding: 6px 12px;
+    font-weight: bold;
+}
+.form-conclusao {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+    font-size: 13px;
+}
+.form-conclusao select {
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #a9c5b9;
+    max-width: 190px;
+}
+.form-conclusao button, .botao-secundario {
+    border: 0;
+    border-radius: 5px;
+    padding: 8px 10px;
+    cursor: pointer;
+    background: #0f675b;
+    color: white;
+}
+.botao-secundario { background: #6e807a; }
+@media (max-width: 600px) {
+    .cuidado { align-items: flex-start; flex-direction: column; gap: 12px; }
+    .acoes-cuidado, .form-conclusao { margin-left: 0; align-items: flex-start; }
+}
