@@ -12,7 +12,7 @@
         <h2>MedMap</h2>
         <ul class="navegacao">
             <a href="{% url 'InicioLogado' %}">Início</a>
-            <a href="{% url 'CalendarioCuidados' %}">Calendário Cuidados</a>
+            
         <ul>
     </nav>
     <main>
@@ -20,24 +20,47 @@
         <p>Organize as informações de consultas, exames e vacinas no seu calendário.</p>
         <section class="formulario">
             <h2>Informações do cuidado</h2>
-            <form>
-                <label for="tipo">Tipo de cuidado</label>
-                <select id="tipo" name="tipo" required>
-                    <option value="">Selecione</option>
-                    <option value="Consulta">Consulta</option>
-                    <option value="Exame">Exame</option>
-                    <option value="Vacina">Vacina</option>
-                </select>
-                <label for="nome">Nome do cuidado</label>
-                <input id="nome" name="nome" type="text" maxlength="150" placeholder="Ex.: Consulta cardiológica" required>
-                <label for="data">Data do cuidado</label>
-                <input id="data" name="data" type="date" required>
-                <label for="observacoes">Observações (opcional)</label>
-                <textarea id="observacoes" name="observacoes" rows="3" placeholder="Detalhes para lembrar"></textarea>
-                <button type="button" disabled>Cadastrar cuidado (em breve)</button>
+            <form method="POST">
+               {% csrf_token %}
+
+               <label for="tipo">Tipo de cuidado</label>
+
+               <select id="tipo" name="tipo" required>
+                  <option value="">Selecione</option>
+                  <option value="Consulta">Consulta</option>
+                  <option value="Exame">Exame</option>
+                  <option value="Vacina">Vacina</option>
+               </select>
+
+               <label for="nome">Nome do cuidado</label>
+
+               <input
+                  id="nome"
+                  name="nome"
+                  type="text"
+                  maxlength="150"
+                  placeholder="Ex.: Consulta cardiológica"
+                  required
+               >
+
+               <label for="data">Data do cuidado</label>
+
+               <input
+                  id="data"
+                  name="data"
+                  type="date"
+                  required
+               >
+
+               {% if erro %}
+                  <p class="erro">{{ erro }}</p>
+               {% endif %}
+
+               <button type="submit">
+                  Cadastrar cuidado
+               </button>
             </form>
         </section>
-        <p class="aviso">Esta tela é um protótipo. O cadastro no banco de dados será implementado em outra etapa.</p>
         <a class="voltar" href="{% url 'CalendarioCuidados' %}">Voltar ao calendário</a>
     </main>
     <footer>MedMap - Seu cuidado, do seu jeito.</footer>

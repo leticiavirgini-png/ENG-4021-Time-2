@@ -254,28 +254,69 @@ def Tela(request):
     return render(request, 'Tela.html')
 
 def HistoricoFamiliar(request):
-
     usuario_id = request.session.get('usuario_id')
 
     if not usuario_id:
         return redirect('Tela')
 
-    perfil = Perfil.objects.filter(usuario_id=usuario_id).first()
+    perfil = Perfil.objects.filter(
+        usuario_id=usuario_id
+    ).first()
 
     if not perfil:
         return redirect('PerfilSaude')
 
+    mensagem = ''
+    erro = ''
+
     if request.method == 'POST':
-        HistoricoFamiliarModel.objects.create(
-            perfil=perfil,
-            parente=request.POST.get('parente'),
-            doenca=request.POST.get('doenca'),
-            idade_diagnostico=request.POST.get('idade')
-        )
+        acao = request.POST.get('acao', 'adicionar')
 
-    historicos = HistoricoFamiliarModel.objects.filter(perfil=perfil)
+        if acao == 'adicionar':
+            parente = request.POST.get('parente', '').strip()
+            doenca = request.POST.get('doenca', '').strip()
+            idade_texto = request.POST.get('idade', '').strip()
 
-    return render(request, 'HistoricoFamiliar.html', {'historicos': historicos})
+            try:
+                idade = int(idade_texto) if idade_texto else None
+            except ValueError:
+                idade = -1
+
+            if not parente or not doenca:
+                erro = 'Preencha o parentesco e a doença.'
+
+            elif idade is not None and not 0 <= idade <= 120:
+                erro = 'Informe uma idade entre 0 e 120 anos.'
+
+            else:
+                HistoricoFamiliarModel.objects.create(
+                    perfil=perfil,
+                    parente=parente,
+                    doenca=doenca,
+                    idade_diagnostico=idade
+                )
+
+                mensagem = 'Informação adicionada com sucesso.'
+
+        elif acao == 'excluir':
+            historico = get_object_or_404(
+                HistoricoFamiliarModel,
+                id=request.POST.get('historico_id'),
+                perfil=perfil
+            )
+
+            historico.delete()
+            mensagem = 'Registro removido com sucesso.'
+
+    historicos = HistoricoFamiliarModel.objects.filter(
+        perfil=perfil
+    ).order_by('parente', 'doenca')
+
+    return render(request, 'HistoricoFamiliar.html', {
+        'historicos': historicos,
+        'mensagem': mensagem,
+        'erro': erro
+    })
 
 def CheckupInteligente(request):
 
@@ -397,68 +438,54 @@ def ListarUsuarios(request):
     })
 
 
-def CalendarioCuidados(request):
-
+def CadastroCuidados(request):
     usuario_id = request.session.get('usuario_id')
-    perfil = Perfil.objects.filter(usuario_id=usuario_id).first()
 
-    cuidados = Cuidado.objects.filter(perfil=perfil)
-    tipos_validos = ('Consulta', 'Exame', 'Vacina')
+    if not usuario_id:
+        return redirect('Tela')
 
-    tipo = request.GET.get('tipo', '')
-    if tipo not in tipos_validos:
-        tipo = ''
-    if tipo:
-        cuidados = cuidados.filter(tipo=tipo)
+    perfil = Perfil.objects.filter(
+        usuario_id=usuario_id
+    ).first()
 
-    inicio = request.GET.get('inicio', '')
-    fim = request.GET.get('fim', '')
-    mensagem_erro = ''
+    if not perfil:
+        return redirect('PerfilSaude')
 
-    try:
-        inicio_data = parse_date(inicio) if inicio else None
-    except ValueError:
-        inicio_data = None
+    mensagem = ''
+    erro = ''
 
-    try:
-        fim_data = parse_date(fim) if fim else None
-    except ValueError:
-        fim_data = None
+    if request.method == 'POST':
+        tipo = request.POST.get('tipo', '').strip()
+        nome = request.POST.get('nome', '').strip()
+        data_cuidado = parse_date(
+            request.POST.get('data', '')
+        )
 
-    if inicio and inicio_data is None:
-        mensagem_erro = 'A data inicial informada é inválida.'
-        inicio = ''
-    if fim and fim_data is None:
-        mensagem_erro = 'A data final informada é inválida.'
-        fim = ''
+        tipos_validos = ('Consulta', 'Exame', 'Vacina')
 
-    if inicio_data and fim_data and inicio_data > fim_data:
-        mensagem_erro = 'A data inicial deve ser anterior ou igual à data final.'
-        cuidados = Cuidado.objects.none()
-    else:
-        if inicio_data:
-            cuidados = cuidados.filter(data__gte=inicio_data)
-        if fim_data:
-            cuidados = cuidados.filter(data__lte=fim_data)
+        if tipo not in tipos_validos:
+            erro = 'Selecione um tipo de cuidado válido.'
 
-    ordem = request.GET.get('ordem', 'asc')
-    if ordem not in ('asc', 'desc'):
-        ordem = 'asc'
-    cuidados = cuidados.order_by('-data' if ordem == 'desc' else 'data', 'id')
+        elif not nome:
+            erro = 'Informe o nome do cuidado.'
 
-    contexto = {
-        'cuidados': cuidados,
-        'hoje': date.today(),
-        'tipos_cuidado': tipos_validos,
-        'tipo_selecionado': tipo,
-        'inicio': inicio,
-        'fim': fim,
-        'ordem': ordem,
-        'mensagem_erro': mensagem_erro,
-        'total_cuidados': cuidados.count(),
-    }
-    return render(request, 'CalendarioCuidados.html', contexto)
+        elif not data_cuidado:
+            erro = 'Informe uma data válida.'
 
+        else:
+            Cuidado.objects.create(
+                perfil=perfil,
+                tipo=tipo,
+                nome=nome,
+                data=data_cuidado
+            )
+
+            return redirect('CalendarioCuidados')
+
+    return render(request, 'CadastroCuidados.html', {
+        'mensagem': mensagem,
+        'erro': erro
+    })
 def RelatorioPreventivo(request):
     usuario_id = request.session.get('usuario_id')
 

@@ -14,14 +14,18 @@
         <h2>MedMap</h2>
         <ul class="navegacao">
             <a href="{% url 'InicioLogado' %}">Início</a>
-            <a href="{% url 'CadastroCuidados' %}">Cadastro Cuidados</a>
+            
         </ul>
     </nav>
 
     <main>
         <h2>Calendário de cuidados</h2>
         <p>Veja os seus próximos exames, consultas e vacinas.</p>
-
+        <div class="cadastro-principal">
+           <a href="{% url 'CadastroCuidados' %}">
+              + Cadastrar novo cuidado
+           </a>
+        </div>
         <form method="get" class="filtros" action="{% url 'CalendarioCuidados' %}">
             <h3>Filtrar cuidados</h3>
             <div class="campos-filtro">
