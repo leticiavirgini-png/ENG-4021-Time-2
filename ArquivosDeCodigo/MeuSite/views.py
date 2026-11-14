@@ -564,8 +564,17 @@ def CadastroCuidados(request):
 
 def InicioLogado(request):
     usuario_id = request.session.get('usuario_id')
+    if not usuario_id:
+        return redirect('Tela')
+
     usuario = get_object_or_404(Usuario, id=usuario_id)
+    perfil = Perfil.objects.filter(usuario=usuario).first()
+
+    proximos_cuidados = Cuidado.objects.filter(
+        perfil=perfil, data__gte=date.today(), concluido=False
+    ).order_by('data', 'id')[:3]
 
     return render(request, 'InicioLogado.html', {
-        'usuario': usuario
+        'usuario': usuario,
+        'proximos_cuidados': proximos_cuidados
     })

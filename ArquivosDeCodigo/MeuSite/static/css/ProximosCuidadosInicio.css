@@ -1,0 +1,34 @@
+/* Seção adicionada abaixo dos cards, sem alterar o layout original. */
+.proximos-inicio {
+    max-width: 1150px;
+    margin: 0 auto 35px;
+    padding: 0 30px;
+}
+.proximos-cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+}
+.proximos-cabecalho h2 { color: #0f675b; margin: 0; }
+.proximos-cabecalho p { color: #668078; margin: 8px 0 0; }
+.proximos-cabecalho a { color: #0f675b; font-weight: bold; }
+.proximos-lista { margin-top: 18px; display: grid; gap: 12px; }
+.proximo-item {
+    background: white;
+    border: 1px solid #dcebe4;
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+.proximo-item strong { color: #173d37; display: block; }
+.proximo-item span { color: #668078; font-size: 13px; display: block; margin-top: 5px; }
+.proximo-item time { color: #0f675b; white-space: nowrap; font-weight: bold; }
+.proximos-vazio { color: #668078; background: white; border-radius: 10px; padding: 20px; }
+@media (max-width: 700px) {
+    .proximos-cabecalho { align-items: flex-start; flex-direction: column; }
+    .proximo-item { align-items: flex-start; flex-direction: column; }
+}
