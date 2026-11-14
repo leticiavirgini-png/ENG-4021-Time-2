@@ -107,6 +107,25 @@
                 <span class="seta">↗</span>
             </a>
 
+            <!-- Sprint 9: quinto card, sem alterar os quatro existentes. -->
+            <div class="area-card calendario-home">
+                <div class="card-topo">
+                    <span class="numero">05</span>
+                    <span class="icone">▦</span>
+                </div>
+                <div class="card-conteudo">
+                    <h3>Calendário</h3>
+                    <p>Veja seus cuidados organizados por dia.</p>
+                </div>
+
+                {% load calendario_inicio %}
+                {% calendario_inicio %}
+
+                <a class="abrir-calendario" href="{% url 'CalendarioCuidados' %}">Abrir calendário completo →</a>
+            </div>
+
+
+
         </section>
 
     </main>
