@@ -1,0 +1,66 @@
+<div class="calendario-resumo-inicio" aria-label="Calendário mensal de cuidados">
+    <div class="calendario-mes">
+        <a href="?mes={{ mes_anterior }}" aria-label="Mês anterior">‹</a>
+        <strong>{{ mes_nome }} de {{ ano }}</strong>
+        <a href="?mes={{ proximo_mes }}" aria-label="Próximo mês">›</a>
+    </div>
+    <div class="calendario-semana" aria-hidden="true">
+        <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
+    </div>
+    <div class="calendario-dias">
+        {% for semana in semanas %}
+            {% for dia in semana %}
+                {% if dia.no_mes %}
+                <a href="{% url 'CalendarioCuidados' %}?inicio={{ dia.dia_iso }}&amp;fim={{ dia.dia_iso }}"
+                   class="calendario-dia{% if dia.com_cuidado %} com-cuidado{% endif %}{% if dia.hoje %} dia-hoje{% endif %}"
+                   {% if dia.com_cuidado %}data-cuidado="{{ dia.dia_iso }}"{% endif %}
+                   title="Ver cuidados de {{ dia.dia_iso }}">{{ dia.numero }}</a>
+                {% else %}
+                <span class="calendario-dia fora-mes"></span>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+    <p class="legenda-calendario">● Dias marcados possuem cuidados cadastrados.</p>
+</div>
+<style>
+/* Estilos exclusivos do quinto card; os quatro anteriores não são alterados. */
+.calendario-home { background: linear-gradient(135deg,#236e63,#4a9a83); gap: 12px; }
+.calendario-home .card-conteudo p { margin: 0; }
+.calendario-resumo-inicio {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    background: #fff;
+    color: #173d37;
+}
+.calendario-mes { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; }
+.calendario-mes a { color: #0f675b; font-size: 22px; font-weight: bold; text-decoration: none; }
+.calendario-semana, .calendario-dias {
+    display: grid;
+    grid-template-columns: repeat(7,minmax(0,1fr));
+    text-align: center;
+    gap: 2px;
+}
+.calendario-semana { margin: 10px 0 4px; color: #668078; font-size: 11px; }
+.calendario-dia {
+    min-width: 0;
+    padding: 5px 0;
+    color: #173d37;
+    text-decoration: none;
+    font-size: 12px;
+    border-radius: 4px;
+}
+.calendario-dia.com-cuidado { background: #c3e8d8; color: #0f675b; font-weight: bold; }
+.calendario-dia.dia-hoje { outline: 1px solid #0f675b; }
+.calendario-dia.fora-mes { background: transparent; }
+.calendario-dia:hover { background: #e2f3eb; }
+.legenda-calendario { font-size: 10px; color: #668078; margin: 10px 0 0; }
+.calendario-home .abrir-calendario {
+    color: #fff;
+    text-decoration: underline;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 2px;
+}
+</style>

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedMap | Início</title>
     <link rel="stylesheet" href="{% static 'css/InicioLogado.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ProximosCuidadosInicio.css' %}">
 </head>
 
 <body>
@@ -149,9 +150,52 @@
                 <span class="seta">↗</span>
             </a>
 
+            <!-- Sprint 9: quinto card, sem alterar os quatro existentes. -->
+            <div class="area-card calendario-home">
+                <div class="card-topo">
+                    <span class="numero">05</span>
+                    <span class="icone">▦</span>
+                </div>
+                <div class="card-conteudo">
+                    <h3>Calendário</h3>
+                    <p>Veja seus cuidados organizados por dia.</p>
+                </div>
+
+                {% load calendario_inicio %}
+                {% calendario_inicio %}
+
+                <a class="abrir-calendario" href="{% url 'CalendarioCuidados' %}">Abrir calendário completo →</a>
+            </div>
+
+
+
         </section>
 
     </main>
+
+    <section class="proximos-inicio">
+        <div class="proximos-cabecalho">
+            <div>
+                <h2>Próximos cuidados</h2>
+                <p>Confira suas próximas consultas, vacinas e exames.</p>
+            </div>
+            <a href="{% url 'CalendarioCuidados' %}">Ver calendário completo</a>
+        </div>
+
+        <div class="proximos-lista">
+            {% for cuidado in proximos_cuidados %}
+            <article class="proximo-item">
+                <div>
+                    <strong>{{ cuidado.nome }}</strong>
+                    <span>{{ cuidado.tipo }}</span>
+                </div>
+                <time datetime="{{ cuidado.data|date:'Y-m-d' }}">{{ cuidado.data|date:"d/m/Y" }}</time>
+            </article>
+            {% empty %}
+            <p class="proximos-vazio">Nenhum cuidado futuro agendado no momento.</p>
+            {% endfor %}
+        </div>
+    </section>
 
     <footer>
         MedMap — Seu cuidado, do seu jeito.
