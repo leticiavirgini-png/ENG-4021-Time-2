@@ -7,18 +7,11 @@ from django.contrib.auth.hashers import make_password
 from django.db import transaction
 
 
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MeuSite.settings')
 django.setup()
 
 
-from banco_de_dados.models import (
-    Usuario,
-    Perfil,
-    HistoricoFamiliar,
-    Cuidado
-)
-
+from banco_de_dados.models import Usuario, Perfil, HistoricoFamiliar, Cuidado
 
 
 pessoas = [
@@ -35,14 +28,14 @@ pessoas = [
 ]
 
 parentes = [
-    ("Mãe", "Diabetes tipo 2", 52),
-    ("Pai", "Hipertensão", 48),
-    ("Avó materna", "Doença cardiovascular", 67),
-    ("Avô paterno", "Diabetes tipo 2", 70),
-    ("Irmão", "Asma", 15),
-    ("Tia", "Hipotireoidismo", 43),
-    ("Avô materno", "Hipertensão", 61),
-    ("Avó paterna", "Osteoporose", 72),
+    ("Mãe", "Hipertensão", 52),
+    ("Pai", "Diabetes tipo 2", 58),
+    ("Irmão ou irmã", "Colesterol alto", 40),
+    ("Mãe", "Câncer de mama", 47),
+    ("Pai", "Câncer de intestino", 55),
+    ("Irmão ou irmã", "Doença renal crônica", 43),
+    ("Avó materna", "Osteoporose", 68),
+    ("Avô paterno", "Glaucoma", 66),
 ]
 
 cuidados = [
@@ -60,27 +53,42 @@ cuidados = [
 def gerar_data_nascimento():
     inicio = date(1960, 1, 1)
     fim = date(2005, 12, 31)
-
     intervalo = (fim - inicio).days
     return inicio + timedelta(days=random.randint(0, intervalo))
 
 
+def criar_historicos(perfil, registros):
+    for parente, doenca, idade in registros:
+        HistoricoFamiliar.objects.create(
+            perfil=perfil,
+            parente=parente,
+            doenca=doenca,
+            idade_diagnostico=idade
+        )
+
+
+def criar_cuidados(perfil, registros):
+    for tipo, nome, dias in registros:
+        Cuidado.objects.create(
+            perfil=perfil,
+            tipo=tipo,
+            nome=nome,
+            data=date.today() + timedelta(days=dias)
+        )
+
+
 @transaction.atomic
 def popular_banco():
-
     random.seed(42)
 
-    total_usuarios = 0
     total_perfis = 0
     total_historicos = 0
     total_cuidados = 0
 
-    for i, (nome, identificador) in enumerate(pessoas, start=1):
-
-        
+    for nome, identificador in pessoas:
         email = f"{identificador}@medmap.com"
 
-        usuario, usuario_criado = Usuario.objects.get_or_create(
+        usuario, _ = Usuario.objects.get_or_create(
             email=email,
             defaults={
                 "nome": nome,
@@ -88,69 +96,78 @@ def popular_banco():
             }
         )
 
-        if usuario_criado:
-            total_usuarios += 1
+        usuario.nome = nome
+        usuario.senha = make_password("MedMapDemo123!")
+        usuario.save()
 
-        
-        perfil, perfil_criado = Perfil.objects.get_or_create(
-            usuario=usuario,
-            defaults={
-                "nome": nome,
-                "data_nascimento": gerar_data_nascimento(),
-                "sexo": random.choice(["Masculino", "Feminino"])
-            }
-        )
+        Perfil.objects.filter(usuario=usuario).delete()
 
-        if perfil_criado:
-            total_perfis += 1
-
-        
-        historicos_escolhidos = random.sample(parentes, 2)
-
-        for parente, doenca, idade in historicos_escolhidos:
-
-            _, criado = HistoricoFamiliar.objects.get_or_create(
-                perfil=perfil,
-                parente=parente,
-                doenca=doenca,
-                defaults={
-                    "idade_diagnostico": idade
-                }
+        if identificador == "ana":
+            perfil = Perfil.objects.create(
+                usuario=usuario,
+                nome=nome,
+                data_nascimento=date(1969, 12, 27),
+                sexo="Feminino",
+                sedentario=True,
+                pouca_fruta=True
             )
 
-            if criado:
-                total_historicos += 1
+            historicos = [
+                ("Mãe", "Câncer de mama", 47),
+                ("Pai", "Hipertensão", 50),
+                ("Irmão ou irmã", "Diabetes tipo 2", 45),
+            ]
 
-        
-        cuidados_escolhidos = random.sample(cuidados, 3)
+            cuidados_da_ana = [
+                ("Consulta", "Consulta clínica", 5),
+                ("Exame", "Exame de colesterol", 12),
+                ("Vacina", "Vacina contra gripe", 20),
+                ("Exame", "Hemograma completo", 35),
+            ]
 
-        for j, (tipo, nome_cuidado) in enumerate(cuidados_escolhidos):
-
-            data_cuidado = date.today() + timedelta(
-                days=(i * 10) + (j * 20)
+            criar_historicos(perfil, historicos)
+            criar_cuidados(perfil, cuidados_da_ana)
+            total_historicos += len(historicos)
+            total_cuidados += len(cuidados_da_ana)
+        else:
+            perfil = Perfil.objects.create(
+                usuario=usuario,
+                nome=nome,
+                data_nascimento=gerar_data_nascimento(),
+                sexo=random.choice(["Masculino", "Feminino"]),
+                fuma=random.choice([True, False]),
+                bebe=random.choice([True, False]),
+                sedentario=random.choice([True, False]),
+                acima_peso=random.choice([True, False]),
+                pouca_fruta=random.choice([True, False]),
+                dorme_pouco=random.choice([True, False]),
+                sol_sem_protetor=random.choice([True, False]),
+                sem_dentista=random.choice([True, False])
             )
 
-            _, criado = Cuidado.objects.get_or_create(
-                perfil=perfil,
-                tipo=tipo,
-                nome=nome_cuidado,
-                defaults={
-                    "data": data_cuidado
-                }
-            )
+            historicos = random.sample(parentes, 2)
+            criar_historicos(perfil, historicos)
 
-            if criado:
-                total_cuidados += 1
+            cuidados_escolhidos = []
+            for tipo, nome_cuidado in random.sample(cuidados, 3):
+                cuidados_escolhidos.append(
+                    (tipo, nome_cuidado, random.randint(3, 60))
+                )
+
+            criar_cuidados(perfil, cuidados_escolhidos)
+            total_historicos += len(historicos)
+            total_cuidados += len(cuidados_escolhidos)
+
+        total_perfis += 1
 
     print("\n===== POPULAÇÃO DO MEDMAP CONCLUÍDA =====")
-    print(f"Novos usuários: {total_usuarios}")
-    print(f"Novos perfis: {total_perfis}")
-    print(f"Novos históricos familiares: {total_historicos}")
-    print(f"Novos cuidados: {total_cuidados}")
-
+    print(f"Perfis recriados: {total_perfis}")
+    print(f"Históricos familiares criados: {total_historicos}")
+    print(f"Cuidados criados: {total_cuidados}")
     print("\nDados de acesso para demonstração:")
-    print("Senha padrão: MedMapDemo123!")
-    print("Exemplo de usuário: ana@medmap.com")
+    print("Usuário: ana@medmap.com")
+    print("Senha: MedMapDemo123!")
+
 
 if __name__ == "__main__":
     popular_banco()
