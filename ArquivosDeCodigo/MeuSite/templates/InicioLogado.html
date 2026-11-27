@@ -56,29 +56,31 @@
 
             <div class="proximos-inicio">
                 <h2>Próximos cuidados</h2>
-                {% for cuidado in proximos_cuidados %}
-                <article class="proximo-item">
-                    <div>
-                        <strong>{{ cuidado.nome }}</strong>
-                        <span>{{ cuidado.tipo }} - {{ cuidado.data|date:"d/m/Y" }}</span>
-                    </div>
-                    <form method="POST" action="{% url 'AtualizarCuidado' cuidado.id %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="acao" value="concluir">
-                        <input type="hidden" name="voltar" value="InicioLogado">
-                        <select name="meses">
-                            <option value="0">Não reagendar</option>
-                            <option value="1">Reagendar em 1 mês</option>
-                            <option value="3">Reagendar em 3 meses</option>
-                            <option value="6">Reagendar em 6 meses</option>
-                            <option value="12">Reagendar em 12 meses</option>
-                        </select>
-                        <button type="submit">Concluir</button>
-                    </form>
-                </article>
-                {% empty %}
-                <p class="proximos-vazio">Nenhum cuidado agendado no momento.</p>
-                {% endfor %}
+                <div class="proximos-lista">
+                    {% for cuidado in proximos_cuidados %}
+                    <article class="proximo-item">
+                        <div>
+                            <strong>{{ cuidado.nome }}</strong>
+                            <span>{{ cuidado.tipo }} - {{ cuidado.data|date:"d/m/Y" }}</span>
+                        </div>
+                        <form method="POST" action="{% url 'AtualizarCuidado' cuidado.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="acao" value="concluir">
+                            <input type="hidden" name="voltar" value="InicioLogado">
+                            <select name="meses">
+                                <option value="0">Não reagendar</option>
+                                <option value="1">Reagendar em 1 mês</option>
+                                <option value="3">Reagendar em 3 meses</option>
+                                <option value="6">Reagendar em 6 meses</option>
+                                <option value="12">Reagendar em 12 meses</option>
+                            </select>
+                            <button type="submit">Concluir</button>
+                        </form>
+                    </article>
+                    {% empty %}
+                    <p class="proximos-vazio">Nenhum cuidado agendado no momento.</p>
+                    {% endfor %}
+                </div>
                 <a href="{% url 'CadastroCuidados' %}" class="novo-cuidado">+ Novo cuidado</a>
             </div>
         </section>
