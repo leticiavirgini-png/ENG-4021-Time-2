@@ -6,16 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Remoção de usuário - MedMap</title>
     <link rel="stylesheet" href="{% static 'css/RemocaoUsuario.css' %}">
+    <link rel="stylesheet" href="{% static 'css/MedMap.css' %}">
 </head>
 <body>
-    <nav>
-       <h2>MedMap</h2>
-       <ul class="navegacao">
-            <a href="{% url 'InicioLogado' %}">Início</a>
-            <a href="{% url 'MinhaConta' %}">Minha conta</a>
-            <a href="{% url 'Sair' %}">Sair</a>
-       </ul>
-    </nav>
+    {% include 'includes/BarraLogado.html' %}
     <main>
        <section id="Remover Usuario">
            <h1>Exclua a sua Conta</h1>
@@ -74,5 +68,6 @@
        </section>
     </main>
 
+    {% include 'includes/Rodape.html' %}
 </body>
 </html>

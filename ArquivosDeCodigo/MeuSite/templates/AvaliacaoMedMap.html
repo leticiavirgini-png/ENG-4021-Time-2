@@ -6,12 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avaliar o MedMap</title>
     <link rel="stylesheet" href="{% static 'css/AvaliacaoMedMap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/MedMap.css' %}">
 </head>
 <body>
-    <nav>
-        <h2>MedMap</h2>
-        <a href="{% url 'InicioLogado' %}">Voltar ao início</a>
-    </nav>
+    {% include 'includes/BarraLogado.html' %}
     <main>
         <h1>Avalie sua experiência</h1>
         <p>Sua opinião ajuda a melhorar o MedMap.</p>
@@ -42,6 +40,6 @@
             </form>
         </section>
     </main>
-    <footer>MedMap — Seu cuidado, do seu jeito.</footer>
+    {% include 'includes/Rodape.html' %}
 </body>
 </html>

@@ -6,16 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entrar na conta - MedMap </title>
     <link rel="stylesheet" href="{% static 'css/Login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/MedMap.css' %}">
 </head>
-<body>
-    <nav>
-        <h2>MedMap</h2>
-        <ul class="navegacao">
-            <a href="{% url 'home' %}">Página inicial</a>
-            <a href="{% url 'ComoUsar' %}">Como usar</a>
-            <a href="{% url 'Artigos' %}">Artigos</a>
-        </ul>
-    </nav>
+<body class="publico">
+    {% include 'includes/BarraPublica.html' %}
 
     <main>
         <section id="login">
@@ -45,8 +39,6 @@
         </section>
     </main>
 
-    <footer>
-        <p>MedMap - seu mapa de saúde preventiva</p>
-    </footer>
+    {% include 'includes/Rodape.html' %}
 </body>
 </html>

@@ -6,15 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Cuidados - MedMap</title>
     <link rel="stylesheet" href="{% static 'css/CadastroCuidados.css' %}">
+    <link rel="stylesheet" href="{% static 'css/MedMap.css' %}">
 </head>
 <body>
-    <nav>
-        <h2>MedMap</h2>
-        <ul class="navegacao">
-            <a href="{% url 'InicioLogado' %}">Início</a>
-            
-        <ul>
-    </nav>
+    {% include 'includes/BarraLogado.html' %}
     <main>
         <h1>Cadastrar cuidado</h1>
         <p>Organize as informações de consultas, exames e vacinas no seu calendário.</p>
@@ -71,6 +66,6 @@
         </section>
         <a class="voltar" href="{% url 'CalendarioCuidados' %}">Voltar ao calendário</a>
     </main>
-    <footer>MedMap - Seu cuidado, do seu jeito.</footer>
+    {% include 'includes/Rodape.html' %}
 </body>
 </html>

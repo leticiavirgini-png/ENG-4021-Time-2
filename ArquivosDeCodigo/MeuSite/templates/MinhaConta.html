@@ -6,16 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha conta - MedMap</title>
     <link rel="stylesheet" href="{% static 'css/MinhaConta.css' %}">
+    <link rel="stylesheet" href="{% static 'css/MedMap.css' %}">
 </head>
 <body>
-    <nav>
-        <h2>MedMap</h2>
-        <div class="navegacao">
-            <a href="{% url 'InicioLogado' %}">Início</a>
-            <a href="{% url 'MinhaConta' %}">Minha conta</a>
-            <a href="{% url 'Sair' %}">Sair</a>
-        </div>
-    </nav>
+    {% include 'includes/BarraLogado.html' %}
 
     <main>
         <section class="identificacao">
@@ -85,6 +79,6 @@
         </p>
     </main>
 
-    <footer>MedMap - seu mapa de saúde preventiva</footer>
+    {% include 'includes/Rodape.html' %}
 </body>
 </html>

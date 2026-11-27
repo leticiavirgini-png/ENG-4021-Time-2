@@ -6,16 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consentimento de Dados - MedMap</title>
     <link rel="stylesheet" href="{% static 'css/ConsentimentoDados.css' %}">
+    <link rel="stylesheet" href="{% static 'css/MedMap.css' %}">
 </head>
 <body>
-    <nav>
-        <h2>MedMap</h2>
-        <div class="navegacao">
-            <a href="{% url 'InicioLogado' %}">Início</a>
-            <a href="{% url 'MinhaConta' %}">Minha conta</a>
-            <a href="{% url 'Sair' %}">Sair</a>
-        </div>
-    </nav>
+    {% include 'includes/BarraLogado.html' %}
     <main>
         <h1>Consentimento de dados</h1>
         <p>Entenda como as informações de saúde poderão ser utilizadas pelo MedMap.</p>
@@ -40,6 +34,6 @@
         <p class="aviso">Tela demonstrativa: nenhuma escolha é registrada. A coleta real de dados dependerá de mecanismos de segurança e privacidade.</p>
         <p><a href="{% url 'MinhaConta' %}">Voltar para Minha conta</a></p>
     </main>
-    <footer>MedMap - seu mapa de saúde preventiva</footer>
+    {% include 'includes/Rodape.html' %}
 </body>
 </html>

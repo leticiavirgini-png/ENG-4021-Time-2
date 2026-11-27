@@ -6,36 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedMap | Página Inicial</title>
     <link rel="stylesheet" href="{% static 'css/InicioUsuario.css' %}">
+    <link rel="stylesheet" href="{% static 'css/MedMap.css' %}">
 </head>
-                
+
 <body>
-                
-    <nav>
-        <h2>MedMap</h2>
-                            
-        <div class="logo">
-            <img src="{% static 'Imagens/logo.png' %}" alt="Logo MedMap">
-        </div>
-    </nav>
-                                                                                    
-    <main>
-          
-        <ul class="buttons-container">
 
-            <a href="{% url 'Tela' %}" class="main-button">
-                Entrar
-            </a>
+    {% include 'includes/BarraPublica.html' %}
 
-            <a href="{% url 'ComoUsar' %}" class="main-button">
-                Como Usar
-            </a>
+    <main class="capa">
 
-            <a href="{% url 'Artigos' %}" class="main-button">
-                Artigos
-            </a>
+        <section class="capa-texto">
+            <div class="capa-logo">
+                <img src="{% static 'Imagens/logo_icone.png' %}" alt="Logo MedMap">
+                <h1>Med<span>Map</span></h1>
+            </div>
 
-        </ul>
+            <div class="capa-botoes">
+                <a href="{% url 'CriarConta' %}" class="botao-principal">Criar conta</a>
+                <a href="{% url 'Tela' %}" class="botao-contorno">Entrar</a>
+            </div>
+
+            <a href="{% url 'ComoUsar' %}" class="link-como-usar">Como funciona?</a>
+        </section>
 
     </main>
 
+    {% include 'includes/Rodape.html' %}
+
 </body>
+</html>

@@ -6,17 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Esqueci senha - MedMap</title>
     <link rel="stylesheet" href="{% static 'css/EsqueciSenha.css' %}">
+    <link rel="stylesheet" href="{% static 'css/MedMap.css' %}">
 </head>
-<body>
-    <nav>
-       <h2>MedMap</h2>
-       <ul class="navegacao">
-            <li><a href="{% url 'home' %}">Página inicial</a></li>
-            <li><a href="{% url 'ComoUsar' %}">Como usar</a></li>
-            <li><a href="{% url 'Artigos' %}">Artigos</a></li>
-            <li><a href="{% url 'Tela' %}">Sair</a></li>
-       </ul>
-    </nav>
+<body class="publico">
+    {% include 'includes/BarraPublica.html' %}
     <main>
        <section id="RecuperarSenha">
            <h1>Esqueceu sua senha?</h1>
@@ -34,5 +27,6 @@
             </div>
        </section>
     </main>
+    {% include 'includes/Rodape.html' %}
 </body>
 </html>

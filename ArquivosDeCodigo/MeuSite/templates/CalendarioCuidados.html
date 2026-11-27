@@ -6,17 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendário de cuidados - MedMap</title>
     <link rel="stylesheet" href="{% static 'css/CalendarioCuidados.css' %}">
+    <link rel="stylesheet" href="{% static 'css/MedMap.css' %}">
 </head>
 
 <body>
 
-    <nav>
-        <h2>MedMap</h2>
-        <ul class="navegacao">
-            <a href="{% url 'InicioLogado' %}">Início</a>
-            
-        </ul>
-    </nav>
+    {% include 'includes/BarraLogado.html' %}
 
     <main>
         <h2>Calendário de cuidados</h2>
@@ -126,9 +121,7 @@
         {% endfor %}
     </main>
 
-    <footer>
-        <p>MedMap - Seu cuidado, do seu jeito.</p>
-    </footer>
+    {% include 'includes/Rodape.html' %}
 
 </body>
 </html>

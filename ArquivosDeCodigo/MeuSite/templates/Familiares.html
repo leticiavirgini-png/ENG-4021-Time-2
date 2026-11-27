@@ -6,16 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meus Familiares - MedMap</title>
     <link rel="stylesheet" href="{% static 'css/Familiares.css' %}">
+    <link rel="stylesheet" href="{% static 'css/MedMap.css' %}">
 </head>
 <body>
 
-    <nav>
-        <h2>MedMap</h2>
-        <ul class="navegacao">
-            <li><a href="{% url 'InicioLogado' %}">Início</a></li>
-            <li><a href="{% url 'HistoricoFamiliar' %}">Histórico Familiar</a></li>
-        </ul>
-    </nav>
+    {% include 'includes/BarraLogado.html' %}
 
     <main>
         <section id="familiares">
@@ -61,9 +56,7 @@
         </section>
     </main>
 
-    <footer>
-        <p>MedMap - seu mapa de saúde preventiva</p>
-    </footer>
+    {% include 'includes/Rodape.html' %}
 
 </body>
 </html>

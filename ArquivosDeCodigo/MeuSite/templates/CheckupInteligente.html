@@ -6,16 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check-up Inteligente - MedMap</title>
     <link rel="stylesheet" href="{% static 'css/CheckupInteligente.css' %}">
+    <link rel="stylesheet" href="{% static 'css/MedMap.css' %}">
 </head>
 <body>
-    <nav>
-        <h2>MedMap</h2>
-        <ul class="navegacao">
-            <li><a href="{% url 'InicioLogado' %}">Início</a></li>
-            <li><a href="{% url 'MinhaConta' %}">Minha conta</a></li>
-            <li><a href="{% url 'Sair' %}">Sair</a></li>
-        </ul>
-    </nav>
+    {% include 'includes/BarraLogado.html' %}
     <main>
         <h1>Check-up Inteligente</h1>
         <p>Recomendações para {{ perfil.nome }}, {{ idade }} anos, de acordo com o seu perfil, o seu histórico familiar e os seus hábitos.</p>
@@ -59,6 +53,6 @@
 
         <p class="rodape-aviso">As recomendações seguem diretrizes do Ministério da Saúde, do INCA e de sociedades médicas. Esta página não substitui orientação médica.</p>
     </main>
-    <footer>MedMap - seu mapa de saúde preventiva</footer>
+    {% include 'includes/Rodape.html' %}
 </body>
 </html>

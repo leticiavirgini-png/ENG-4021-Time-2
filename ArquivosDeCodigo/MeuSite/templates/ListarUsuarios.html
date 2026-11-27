@@ -1,3 +1,4 @@
+{% load static %}
 {% load static%}
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -6,19 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listar usuários - MedMap</title>
     <link rel="stylesheet" href="{% static 'css/ListarUsuarios.css' %}">
+    <link rel="stylesheet" href="{% static 'css/MedMap.css' %}">
 </head>
 
 <body>
 
-    <nav>
-        <h2>MedMap</h2>
-        <ul class="navegacao">
-            <li><a href="{% url 'home' %}">Página inicial</a></li>
-            <li><a href="{% url 'ComoUsar' %}">Como usar</a></li>
-            <li><a href="{% url 'Artigos' %}">Artigos</a></li>
-            <li><a href="{% url 'Tela' %}">Sair</a></li>
-       </ul>
-    </nav>
+    {% include 'includes/BarraPublica.html' %}
 
     <main>
         <h2>Usuários cadastrados</h2>
@@ -42,9 +36,7 @@
         <a href="{% url 'CriarConta' %}" class="novo">Cadastrar novo usuário</a>
     </main>
 
-    <footer>
-        <p>MedMap - Seu cuidado, do seu jeito.</p>
-    </footer>
+    {% include 'includes/Rodape.html' %}
 
 </body>
 </html>
