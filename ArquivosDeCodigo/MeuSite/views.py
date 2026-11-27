@@ -31,6 +31,11 @@ def PerfilSaude(request):
         fuma = request.POST.get('fuma') == 'sim'
         bebe = request.POST.get('bebe') == 'sim'
         sedentario = request.POST.get('sedentario') == 'sim'
+        acima_peso = request.POST.get('acima_peso') == 'sim'
+        pouca_fruta = request.POST.get('pouca_fruta') == 'sim'
+        dorme_pouco = request.POST.get('dorme_pouco') == 'sim'
+        sol_sem_protetor = request.POST.get('sol_sem_protetor') == 'sim'
+        sem_dentista = request.POST.get('sem_dentista') == 'sim'
 
         if not nome or not data_nascimento or not sexo:
             erro = 'Preencha todos os campos do perfil.'
@@ -42,6 +47,11 @@ def PerfilSaude(request):
                 perfil.fuma = fuma
                 perfil.bebe = bebe
                 perfil.sedentario = sedentario
+                perfil.acima_peso = acima_peso
+                perfil.pouca_fruta = pouca_fruta
+                perfil.dorme_pouco = dorme_pouco
+                perfil.sol_sem_protetor = sol_sem_protetor
+                perfil.sem_dentista = sem_dentista
                 perfil.save()
             else:
                 perfil = Perfil.objects.create(
@@ -51,7 +61,12 @@ def PerfilSaude(request):
                     sexo=sexo,
                     fuma=fuma,
                     bebe=bebe,
-                    sedentario=sedentario
+                    sedentario=sedentario,
+                    acima_peso=acima_peso,
+                    pouca_fruta=pouca_fruta,
+                    dorme_pouco=dorme_pouco,
+                    sol_sem_protetor=sol_sem_protetor,
+                    sem_dentista=sem_dentista
                 )
 
             mensagem = 'Perfil salvo com sucesso.'
@@ -400,6 +415,11 @@ def CheckupInteligente(request):
     fuma = perfil.fuma
     bebe = perfil.bebe
     sedentario = perfil.sedentario
+    acima_peso = perfil.acima_peso
+    pouca_fruta = perfil.pouca_fruta
+    dorme_pouco = perfil.dorme_pouco
+    sol_sem_protetor = perfil.sol_sem_protetor
+    sem_dentista = perfil.sem_dentista
 
     # doencas de parentes de primeiro grau
     historicos = HistoricoFamiliarModel.objects.filter(perfil=perfil)
@@ -427,9 +447,13 @@ def CheckupInteligente(request):
         })
 
     # diabetes
-    if 'Diabetes tipo 2' in doencas:
+    if 'Diabetes tipo 2' in doencas or (acima_peso and sedentario):
+        if 'Diabetes tipo 2' in doencas:
+            texto_diabetes = 'Fazer exame de glicemia de jejum agora e repetir a cada 3 anos, porque há diabetes na família.'
+        else:
+            texto_diabetes = 'Fazer exame de glicemia de jejum agora e repetir a cada 3 anos.'
         recomendacoes.append({
-            'texto': 'Fazer exame de glicemia de jejum agora e repetir a cada 3 anos, porque há diabetes na família.',
+            'texto': texto_diabetes,
             'nome': 'Glicemia de jejum',
             'tipo': 'Exame'
         })
@@ -559,6 +583,46 @@ def CheckupInteligente(request):
             'tipo': ''
         })
 
+    if acima_peso:
+        recomendacoes.append({
+            'texto': 'Procurar uma Unidade Básica de Saúde para avaliar o peso e receber orientação sobre alimentação e atividade física.',
+            'nome': '',
+            'tipo': ''
+        })
+
+    if pouca_fruta:
+        recomendacoes.append({
+            'texto': 'Comer frutas, verduras e legumes todos os dias e preferir alimentos naturais aos ultraprocessados.',
+            'nome': '',
+            'tipo': ''
+        })
+
+    if dorme_pouco:
+        recomendacoes.append({
+            'texto': 'Tentar dormir de 7 a 9 horas por noite e procurar um médico se o sono ruim continuar.',
+            'nome': '',
+            'tipo': ''
+        })
+
+    if sol_sem_protetor:
+        recomendacoes.append({
+            'texto': 'Usar protetor solar com FPS 30 ou mais e evitar o sol entre 10h e 16h.',
+            'nome': '',
+            'tipo': ''
+        })
+        recomendacoes.append({
+            'texto': 'Observar a pele e procurar um dermatologista se notar pintas que mudam de cor, tamanho ou forma.',
+            'nome': '',
+            'tipo': ''
+        })
+
+    if sem_dentista:
+        recomendacoes.append({
+            'texto': 'Ir ao dentista pelo menos uma vez por ano.',
+            'nome': 'Consulta com dentista',
+            'tipo': 'Consulta'
+        })
+
     nomes_no_calendario = []
     for cuidado in Cuidado.objects.filter(perfil=perfil, concluido=False):
         nomes_no_calendario.append(cuidado.nome)
@@ -570,7 +634,12 @@ def CheckupInteligente(request):
         'nomes_no_calendario': nomes_no_calendario,
         'fuma': fuma,
         'bebe': bebe,
-        'sedentario': sedentario
+        'sedentario': sedentario,
+        'acima_peso': acima_peso,
+        'pouca_fruta': pouca_fruta,
+        'dorme_pouco': dorme_pouco,
+        'sol_sem_protetor': sol_sem_protetor,
+        'sem_dentista': sem_dentista
     })
 
 def ListarUsuarios(request):

@@ -25,7 +25,12 @@
             {% if fuma %}<p>Fuma</p>{% endif %}
             {% if bebe %}<p>Bebe álcool com frequência</p>{% endif %}
             {% if sedentario %}<p>Não pratica atividade física</p>{% endif %}
-            {% if not fuma and not bebe and not sedentario %}<p>Nenhum hábito de risco informado.</p>{% endif %}
+            {% if acima_peso %}<p>Está acima do peso</p>{% endif %}
+            {% if pouca_fruta %}<p>Come poucas frutas, verduras e legumes</p>{% endif %}
+            {% if dorme_pouco %}<p>Dorme menos de 7 horas por noite</p>{% endif %}
+            {% if sol_sem_protetor %}<p>Fica no sol sem protetor solar</p>{% endif %}
+            {% if sem_dentista %}<p>Não vai ao dentista há mais de 1 ano</p>{% endif %}
+            {% if not fuma and not bebe and not sedentario and not acima_peso and not pouca_fruta and not dorme_pouco and not sol_sem_protetor and not sem_dentista %}<p>Nenhum hábito de risco informado.</p>{% endif %}
             <p>Para alterar seus hábitos, edite o seu <a href="{% url 'PerfilSaude' %}">Perfil de saúde</a>.</p>
         </div>
 
