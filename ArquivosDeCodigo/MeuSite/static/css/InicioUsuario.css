@@ -1,114 +1,84 @@
+/* Tela inicial antes do login */
 
-* {
+.capa {
     box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f7fbf8;
-    color: #173d37;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-nav {
-    background-color: #0f675b;
-    color: white;
-    padding: 0 20px;
-    height: 68px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-nav h2 {
-    margin: 0;
-    color: white;
-    font-size: 24px;
-    
-}
-
-.logo img {
-    height: 30px;
-    width: auto;
-    object-fit: contain;
-    display: block;
-}
-
-main {
-    flex: 1;
+    min-height: calc(100vh - 140px);
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px 20px;
+    padding: 60px 20px;
+    background: linear-gradient(180deg, #f3f8f5, #dcefe6);
+    color: #0b4f45;
 }
 
-.buttons-container {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    transform: translateY(100px);
+.capa-texto {
+    text-align: center;
 }
 
-.main-button {
+.capa-logo {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 18px;
+}
 
-    width: 100%;
-    min-height: 95px;
+.capa-logo img {
+    width: 96px;
+    height: 96px;
+}
 
-    background-color: #0f675b;
+.capa-logo h1 {
+    font-family: 'Manrope', Arial, sans-serif;
+    font-size: 64px;
+    margin: 0;
+}
+
+.capa-logo h1 span {
+    color: #2fae86;
+}
+
+.capa-botoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin-top: 40px;
+}
+
+.botao-principal {
+    background: #0f675b;
     color: white;
-
     text-decoration: none;
-    font-size: 24px;
     font-weight: bold;
-
-    border-radius: 8px;
-    border: 1px solid #dbe7e2;
-
-    transition: 0.3s ease;
+    font-size: 20px;
+    padding: 18px 48px;
+    border-radius: 40px;
 }
 
-.main-button:hover {
-    background-color: #0b5048;
-    transform: translateY(-3px);
+.botao-contorno {
+    border: 2px solid #0f675b;
+    color: #0f675b;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 16px 48px;
+    border-radius: 40px;
 }
 
-.main-button:active {
-    transform: scale(0.98);
+.link-como-usar {
+    display: inline-block;
+    margin-top: 26px;
+    color: #0f675b;
+    font-size: 17px;
+    font-weight: bold;
 }
 
-@media (max-width: 600px) {
-
-    nav {
-        height: 68px;
-        padding: 0 20px;
-    }
-
-    nav h2 {
-        font-size: 24px;
-        margin: 0;
-    }
-
-    .logo img {
-        height: 30px;
-    }
-
-    main {
-        min-height: calc(100vh - 68px);
-        
-    }
-
-.logo {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    padding: 0;
+main.capa + footer.rodape {
+    margin-top: 0;
 }
+
+@media (max-width: 800px) {
+    .capa-logo h1 {
+        font-size: 46px;
+    }
 }

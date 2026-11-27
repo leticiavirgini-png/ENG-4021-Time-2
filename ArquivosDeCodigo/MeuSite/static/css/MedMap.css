@@ -1,0 +1,151 @@
+/* Identidade visual do MedMap: usado em todas as telas */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&display=swap');
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f3f8f5;
+    color: #173d37;
+}
+
+/* Barra superior */
+
+nav.barra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
+    margin: 0;
+    padding: 14px 40px;
+    background: linear-gradient(90deg, #0b4f45, #0f675b);
+    box-shadow: 0 4px 14px rgba(11, 79, 69, 0.25);
+    border: none;
+    position: static;
+}
+
+.barra .marca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    background: none;
+}
+
+.barra .marca-icone img {
+    width: 44px;
+    height: 44px;
+    display: block;
+}
+
+.barra .marca-nome {
+    color: white;
+    font-family: 'Manrope', Arial, sans-serif;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.barra .marca-nome strong {
+    color: #7ee0b0;
+}
+
+.barra-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.barra-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 9px 16px;
+    margin: 0;
+    border-radius: 20px;
+    background: none;
+}
+
+.barra-links a:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.barra-links .barra-destaque {
+    border: 1px solid #7ee0b0;
+    color: #7ee0b0;
+}
+
+/* Rodape */
+
+footer.rodape {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 40px;
+    padding: 22px;
+    background: #0b4f45;
+    color: #d7efe5;
+    font-size: 14px;
+}
+
+footer.rodape img {
+    width: 24px;
+    height: 24px;
+}
+
+/* Fundo decorado das telas antes do login */
+
+body.publico {
+    background-color: #eaf6f0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+body.publico main {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+}
+
+body.publico::before {
+    content: "";
+    position: fixed;
+    width: 420px;
+    height: 420px;
+    left: -220px;
+    bottom: -200px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3fae86, #0f675b);
+    opacity: 0.8;
+}
+
+body.publico::after {
+    content: "";
+    position: fixed;
+    width: 380px;
+    height: 380px;
+    right: -180px;
+    top: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7ee0b0, #3fae86);
+    opacity: 0.35;
+}
+
+nav.barra,
+footer.rodape {
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 700px) {
+    nav.barra {
+        flex-direction: column;
+        gap: 12px;
+        padding: 14px 20px;
+    }
+}
