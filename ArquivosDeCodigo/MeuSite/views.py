@@ -737,7 +737,7 @@ def CadastroCuidados(request):
                 observacoes=observacoes
             )
 
-            return redirect('CalendarioCuidados')
+            return redirect('InicioLogado')
 
     return render(request, 'CadastroCuidados.html', {
         'mensagem': mensagem,
