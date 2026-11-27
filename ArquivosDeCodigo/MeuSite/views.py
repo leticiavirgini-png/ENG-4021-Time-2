@@ -956,7 +956,7 @@ def InicioLogado(request):
         perfil=perfil,
         concluido=False,
         data__gte=date.today()
-    ).order_by('data')[:3]
+    ).order_by('data')
 
     return render(request, 'InicioLogado.html', {
         'usuario': usuario,
