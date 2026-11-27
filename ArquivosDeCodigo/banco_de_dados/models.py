@@ -21,6 +21,11 @@ class Perfil(models.Model):
     fuma = models.BooleanField(default=False)
     bebe = models.BooleanField(default=False)
     sedentario = models.BooleanField(default=False)
+    acima_peso = models.BooleanField(default=False)
+    pouca_fruta = models.BooleanField(default=False)
+    dorme_pouco = models.BooleanField(default=False)
+    sol_sem_protetor = models.BooleanField(default=False)
+    sem_dentista = models.BooleanField(default=False)
 
     def __str__(self):
         return self.nome
