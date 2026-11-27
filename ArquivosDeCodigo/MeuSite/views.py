@@ -555,6 +555,39 @@ def CheckupInteligente(request):
                 'tipo': 'Exame'
             })
 
+
+    # pele
+    if 'Câncer de pele (melanoma)' in doencas:
+        recomendacoes.append({
+            'texto': 'Consultar um dermatologista uma vez por ano para examinar a pele, porque há melanoma na família.',
+            'nome': 'Consulta com dermatologista',
+            'tipo': 'Consulta'
+        })
+
+    # glaucoma
+    if 'Glaucoma' in doencas and idade >= 40:
+        recomendacoes.append({
+            'texto': 'Fazer exame de olhos com medida da pressão ocular a cada 1 a 2 anos, porque há glaucoma na família.',
+            'nome': 'Exame de glaucoma',
+            'tipo': 'Exame'
+        })
+
+    # ovario
+    if 'Câncer de ovário' in doencas:
+        recomendacoes.append({
+            'texto': 'Conversar com o médico sobre aconselhamento genético, porque câncer de ovário na família pode indicar risco hereditário.',
+            'nome': 'Consulta sobre aconselhamento genético',
+            'tipo': 'Consulta'
+        })
+
+    # rins
+    if 'Doença renal crônica' in doencas:
+        recomendacoes.append({
+            'texto': 'Fazer exame de creatinina no sangue e exame de urina uma vez por ano, porque há doença renal crônica na família.',
+            'nome': 'Exame dos rins',
+            'tipo': 'Exame'
+        })
+
     # habitos
     if fuma:
         recomendacoes.append({
