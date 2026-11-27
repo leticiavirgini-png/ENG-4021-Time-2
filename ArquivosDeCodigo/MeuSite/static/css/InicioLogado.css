@@ -190,6 +190,13 @@ main {
     flex: 1;
 }
 
+.proximos-lista {
+    max-height: 430px;
+    overflow-y: auto;
+    padding-right: 6px;
+    margin-bottom: 12px;
+}
+
 .proximo-item {
     background: white;
     border: 1px solid #dcebe4;
