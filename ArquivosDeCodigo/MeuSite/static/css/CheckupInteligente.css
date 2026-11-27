@@ -115,3 +115,19 @@ footer{
     font-weight:bold;
     margin:10px 0;
 }
+
+.botao-proximo {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: #0f675b;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.botao-proximo:hover {
+    background: #0b5048;
+}

@@ -79,28 +79,9 @@
             </form>
         </section>
         <section class="funcoes-saude">
-
-                <h2>Minhas funcionalidades</h2>
-
-                <div class="botoes-saude">
-
-                    <a href="{% url 'CheckupInteligente' %}" class="botao-saude">
-                       <h3>Check-up Inteligente</h3>
-                       <p>
-                       Consulte recomendações preventivas
-                       com base nos seus dados de saúde.
-                       </p>
-                    </a>
-
-                    <a href="{% url 'HistoricoFamiliar' %}" class="botao-saude">
-                       <h3>Histórico Familiar</h3>
-                       <p>
-                        Consulte e atualize informações
-                        sobre doenças na sua família.
-                       </p>
-                    </a>
-
-                </div>
+            <a href="{% url 'HistoricoFamiliar' %}" class="botao-proximo">
+                Próximo: Histórico familiar
+            </a>
 
         </section>
     </main>

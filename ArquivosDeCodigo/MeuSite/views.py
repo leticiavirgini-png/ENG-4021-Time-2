@@ -387,7 +387,9 @@ def CheckupInteligente(request):
     perfil = Perfil.objects.filter(usuario_id=usuario_id).first()
 
     if not perfil:
-        return redirect('PerfilSaude')
+        return render(request, 'CheckupInteligente.html', {
+            'sem_perfil': True
+        })
 
     if request.method == 'POST':
         nome = request.POST.get('nome')
