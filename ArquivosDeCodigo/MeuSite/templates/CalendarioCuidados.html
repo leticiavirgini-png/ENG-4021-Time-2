@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendário de cuidados - MedMap</title>
     <link rel="stylesheet" href="{% static 'css/CalendarioCuidados.css' %}">
-    <link rel="stylesheet" href="{% static 'css/ExportarCalendario.css' %}">
 </head>
 
 <body>
@@ -26,10 +25,6 @@
            <a href="{% url 'CadastroCuidados' %}">
               + Cadastrar novo cuidado
            </a>
-        </div>
-        <div class="exportacao-calendario">
-            <a href="{% url 'ExportarCalendario' %}">Exportar próximos cuidados (.ics)</a>
-            <p>Baixe seus compromissos para importar no calendário do celular.</p>
         </div>
         <form method="get" class="filtros" action="{% url 'CalendarioCuidados' %}">
             <h3>Filtrar cuidados</h3>
