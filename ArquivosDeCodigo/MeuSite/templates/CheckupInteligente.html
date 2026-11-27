@@ -11,6 +11,13 @@
 <body>
     {% include 'includes/BarraLogado.html' %}
     <main>
+        {% if sem_perfil %}
+            <h1>Check-up Inteligente</h1>
+            <p>Preencha o seu Perfil de saúde para ver as suas recomendações.</p>
+            <a href="{% url 'PerfilSaude' %}" class="bota-proximo">
+                Preencher Perfil de saúde
+            </a>
+        {% else %}
         <h1>Check-up Inteligente</h1>
         <p>Recomendações para {{ perfil.nome }}, {{ idade }} anos, de acordo com o seu perfil, o seu histórico familiar e os seus hábitos.</p>
 
@@ -52,6 +59,7 @@
         </section>
 
         <p class="rodape-aviso">As recomendações seguem diretrizes do Ministério da Saúde, do INCA e de sociedades médicas. Esta página não substitui orientação médica.</p>
+        {% endif %}
     </main>
     {% include 'includes/Rodape.html' %}
 </body>
