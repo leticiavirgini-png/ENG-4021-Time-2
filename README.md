@@ -46,7 +46,6 @@ Em desenvolvimento. As telas estão no projeto Django, com uma rota para cada te
 - Perfil de saúde, consentimento de dados e preferências de notificações
 - Registrar o histórico de saúde da família e os familiares
 - Check-up Inteligente: sugerir consultas, exames e vacinas de acordo com a idade, o sexo, os hábitos e o histórico familiar
-- Relatório preventivo com o resumo dos cuidados
 - Página de artigos com dúvidas comuns sobre saúde preventiva
 
 ## Tecnologias
@@ -96,7 +95,6 @@ As telas ficam em `ArquivosDeCodigo/MeuSite/templates`, e o CSS de cada uma fica
 | Consentimento de dados | `ConsentimentoDados.html` | `/ConsentimentoDados/` | Autorizar o uso dos dados de saúde |
 | Preferências de notificações | `PreferenciasNotificacoes.html` | `/PreferenciasNotificacoes/` | Escolher os lembretes que quer receber |
 | Check-up Inteligente | `CheckupInteligente.html` | `/CheckupInteligente/` | Cuidados preventivos recomendados |
-| Relatório preventivo | `RelatorioPreventivo.html` | `/RelatorioPreventivo/` | Resumo dos cuidados de saúde do usuário |
 
 ### Login
 Tela de entrada, onde o usuário digita o e-mail e a senha. Os dados são conferidos no banco de dados.
@@ -173,11 +171,6 @@ Cuidados preventivos recomendados, com a situação de cada um.
 
 ![Tela de check-up inteligente](Imagens/checkup-inteligente.png)
 
-### Relatório preventivo
-Resumo dos cuidados de saúde do usuário, com opção de imprimir.
-
-![Tela de relatório preventivo](Imagens/relatorio-preventivo.png)
-
 ## Fluxo de uso
 
 1. Entre na tela de **Login**. Se ainda não tiver conta, clique em **Criar conta**.
@@ -185,9 +178,8 @@ Resumo dos cuidados de saúde do usuário, com opção de imprimir.
 3. Depois de entrar, você chega na **Página inicial**.
 4. Preencha o **Perfil de saúde**, o **Consentimento de dados** e o **Histórico familiar**.
 5. Veja os cuidados recomendados no **Check-up Inteligente** e as datas no **Calendário de cuidados**.
-6. Em **Relatório preventivo**, veja o resumo dos seus cuidados.
-7. Em **Como usar** e **Artigos**, leia o passo a passo do MedMap e textos sobre saúde preventiva.
-8. Para mudar os seus dados ou excluir a conta, use as telas de **Edição** e **Remoção de usuário**.
+6. Em **Como usar** e **Artigos**, leia o passo a passo do MedMap e textos sobre saúde preventiva.
+7. Para mudar os seus dados ou excluir a conta, use as telas de **Edição** e **Remoção de usuário**.
 
 ## Arquitetura do projeto
 

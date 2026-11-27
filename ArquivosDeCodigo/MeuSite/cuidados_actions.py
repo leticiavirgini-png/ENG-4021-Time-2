@@ -45,5 +45,8 @@ def atualizar_cuidado(request, cuidado_id):
                 nome=cuidado.nome,
                 data=somar_meses(date.today(), int(meses))
             )
+    
+    elif acao == 'apagar':
+        cuidado.delete()
 
     return redirect(request.POST.get('voltar', 'CalendarioCuidados'))

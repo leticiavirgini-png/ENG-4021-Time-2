@@ -243,3 +243,12 @@ footer {
     padding: 9px;
     cursor: pointer;
 }
+
+.acoes-cuidado button.botao-apagar {
+    background: transparent;
+    color: #b3261e;
+    border: 1px solid #b3261e;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
