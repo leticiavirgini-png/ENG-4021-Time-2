@@ -1,0 +1,13 @@
+{% load static %}
+<nav class="barra">
+    <a href="{% url 'InicioLogado' %}" class="marca">
+        <span class="marca-icone"><img src="{% static 'Imagens/logo_icone.png' %}" alt="Logo MedMap"></span>
+        <span class="marca-nome">Med<strong>Map</strong></span>
+    </a>
+
+    <div class="barra-links">
+        <a href="{% url 'InicioLogado' %}">Início</a>
+        <a href="{% url 'MinhaConta' %}">Minha conta</a>
+        <a href="{% url 'Sair' %}" class="barra-destaque">Sair</a>
+    </div>
+</nav>
