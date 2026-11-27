@@ -117,8 +117,36 @@ form button {
     margin-bottom: 5px;
 }
 
-.remover {
-    background-color: #a63d40;
+.mensagem {
+    padding: 12px;
+    border-radius: 5px;
+    background-color: #dff3e8;
+    color: #0f675b;
+}
+
+.erro {
+    padding: 12px;
+    border-radius: 5px;
+    background-color: #fde8e5;
+    color: #b3261e;
+}
+
+.registro form {
+    flex: 0 0 auto;
+}
+
+.registro .botao-remover {
+    width: auto;
+    margin-top: 0;
+    background-color: white;
+    color: #b3261e;
+    border: 1px solid #b3261e;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.registro .botao-remover:hover {
+    background-color: #fde8e5;
 }
 
 footer {
@@ -149,7 +177,8 @@ footer p {
         flex-direction: column;
     }
 
-    .remover {
+    .registro form,
+    .registro .botao-remover {
         width: 100%;
     }
 }
