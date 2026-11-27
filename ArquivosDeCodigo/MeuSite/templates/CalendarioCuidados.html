@@ -114,6 +114,11 @@
                         <button type="submit">✓ Marcar como feito</button>
                     </form>
                 {% endif %}
+                <form method="POST" action="{% url 'AtualizarCuidado' cuidado.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="acao" value="apagar">
+                    <button type="submit" class="botao-apagar">Apagar</button>
+                </form>
             </div>
         </div>
         {% empty %}

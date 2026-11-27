@@ -76,6 +76,12 @@
                             </select>
                             <button type="submit">Concluir</button>
                         </form>
+                        <form method="POST" action="{% url 'AtualizarCuidado' cuidado.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="acao" value="apagar">
+                            <input type="hidden" name="voltar" value="InicioLogado">
+                            <button type="submit" class="botao-apagar">Apagar</button>
+                        </form>
                     </article>
                     {% empty %}
                     <p class="proximos-vazio">Nenhum cuidado agendado no momento.</p>

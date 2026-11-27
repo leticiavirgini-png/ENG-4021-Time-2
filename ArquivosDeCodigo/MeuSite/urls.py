@@ -64,8 +64,6 @@ urlpatterns = [
     path('ListarUsuarios/',views.ListarUsuarios, name='ListarUsuarios' ),
 
     path('CalendarioCuidados/', views.CalendarioCuidados, name='CalendarioCuidados'),
-
-    path('RelatorioPreventivo/', views.RelatorioPreventivo, name='RelatorioPreventivo'),
    
     path('Familiares/', views.Familiares, name='Familiares'),
     
