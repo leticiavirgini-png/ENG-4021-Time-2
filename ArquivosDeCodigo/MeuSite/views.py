@@ -746,15 +746,6 @@ def CadastroCuidados(request):
         'erro': erro
     })
 
-def Familiares(request):
-
-    usuario_id = request.session.get('usuario_id')
-    perfil = Perfil.objects.filter(usuario_id=usuario_id).first()
-
-    familiares = HistoricoFamiliarModel.objects.filter(perfil=perfil)
-
-    return render(request, 'Familiares.html', {'familiares': familiares})
-
 
 def CalendarioCuidados(request):
 
