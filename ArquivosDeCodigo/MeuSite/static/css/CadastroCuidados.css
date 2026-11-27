@@ -66,9 +66,13 @@ button {
     border-radius: 5px;
     font: inherit;
     font-weight: bold;
-    background: #92b4aa;
+    background: #0f675b;
     color: white;
-    cursor: not-allowed;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0b4f45;
 }
 .aviso { color: #55736c; font-size: 14px; }
 .voltar { color: #0f675b; text-decoration: none; }
