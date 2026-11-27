@@ -7,6 +7,17 @@ from django.views.decorators.http import require_POST
 from banco_de_dados.models import Cuidado, Perfil
 
 
+# telas para onde o usuário pode voltar depois de concluir ou desfazer um cuidado.
+# Qualquer outro valor (por exemplo, o endereço de um site externo) é ignorado.
+DESTINOS_PERMITIDOS = ('CalendarioCuidados', 'InicioLogado')
+
+
+def destino_seguro(voltar):
+    if voltar in DESTINOS_PERMITIDOS:
+        return voltar
+    return 'CalendarioCuidados'
+
+
 def somar_meses(data, meses):
     total = data.year * 12 + (data.month - 1) + meses
     ano, indice_mes = divmod(total, 12)
@@ -49,4 +60,4 @@ def atualizar_cuidado(request, cuidado_id):
     elif acao == 'apagar':
         cuidado.delete()
 
-    return redirect(request.POST.get('voltar', 'CalendarioCuidados'))
+    return redirect(destino_seguro(request.POST.get('voltar')))

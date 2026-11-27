@@ -4,6 +4,18 @@ from datetime import date, timedelta
 from django.utils.dateparse import parse_date
 from banco_de_dados.models import Usuario, Perfil, HistoricoFamiliar as HistoricoFamiliarModel, Cuidado
 
+
+SEXOS_VALIDOS = ('Feminino', 'Masculino', 'Outro', 'Prefiro não informar')
+
+
+def ler_data(texto):
+    """Converte 'aaaa-mm-dd' em data. Devolve None se o texto não for uma data que existe."""
+    try:
+        return parse_date(texto or '')
+    except ValueError:
+        # parse_date gera ValueError para datas que não existem, como 2026-02-31
+        return None
+
 def home(request):
     '''
     View function for home page of site.
@@ -24,7 +36,7 @@ def PerfilSaude(request):
 
     if request.method == 'POST':
         nome = request.POST.get('nome', '').strip()
-        data_nascimento = parse_date(
+        data_nascimento = ler_data(
             request.POST.get('data_nascimento', '')
         )
         sexo = request.POST.get('sexo', '').strip()
@@ -39,6 +51,14 @@ def PerfilSaude(request):
 
         if not nome or not data_nascimento or not sexo:
             erro = 'Preencha todos os campos do perfil.'
+        elif len(nome) > 100:
+            erro = 'O nome deve ter até 100 caracteres.'
+        elif data_nascimento > date.today():
+            erro = 'A data de nascimento não pode estar no futuro.'
+        elif data_nascimento.year < 1900:
+            erro = 'Informe uma data de nascimento válida.'
+        elif sexo not in SEXOS_VALIDOS:
+            erro = 'Selecione uma opção válida de sexo.'
         else:
             if perfil:
                 perfil.nome = nome
@@ -293,12 +313,17 @@ def RemocaoUsuario(request, usuario_id):
 def Tela(request):
 
     if request.method == 'POST':
-        email = request.POST.get('email')
-        senha = request.POST.get('senha')
+        # o cadastro salva o e-mail em minúsculas e sem espaços,
+        # então o login precisa tratar o e-mail digitado do mesmo jeito
+        email = request.POST.get('email', '').strip().lower()
+        senha = request.POST.get('senha', '')
 
-        usuario = Usuario.objects.filter(email=email).first()
+        usuario = Usuario.objects.filter(email__iexact=email).first()
 
         if usuario and check_password(senha, usuario.senha):
+            # gera uma nova chave de sessão ao entrar (proteção contra roubo de sessão)
+            request.session.cycle_key()
+
             contas=request.session.get('contas_utilizadas',[])
 
             if usuario.id not in contas:
@@ -343,6 +368,9 @@ def HistoricoFamiliar(request):
 
             if not parente or not doenca:
                 erro = 'Preencha o parentesco e a doença.'
+
+            elif len(parente) > 50 or len(doenca) > 150:
+                erro = 'Parentesco ou doença ultrapassam o limite permitido.'
 
             elif idade is not None and not 0 <= idade <= 120:
                 erro = 'Informe uma idade entre 0 e 120 anos.'
@@ -711,7 +739,7 @@ def CadastroCuidados(request):
         nome = request.POST.get('nome', '').strip()
         local = request.POST.get('local', '').strip()
         observacoes = request.POST.get('observacoes', '').strip()
-        data_cuidado = parse_date(
+        data_cuidado = ler_data(
             request.POST.get('data', '')
         )
 
@@ -722,6 +750,9 @@ def CadastroCuidados(request):
 
         elif not nome:
             erro = 'Informe o nome do cuidado.'
+
+        elif len(nome) > 150:
+            erro = 'O nome do cuidado deve ter até 150 caracteres.'
 
         elif not data_cuidado:
             erro = 'Informe uma data válida.'
