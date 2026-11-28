@@ -15,14 +15,15 @@ class TestesProximosCuidadosInicio(TestCase):
         sessao['usuario_id'] = self.usuario.pk
         sessao.save()
 
-    def test_exibe_apenas_tres_proximos_na_ordem(self):
+    def test_exibe_todos_os_proximos_na_ordem(self):
+        # a lista de próximos cuidados agora tem rolagem e mostra todos, não só 3
         hoje = date.today()
         for dias in (4, 1, 3, 2):
             Cuidado.objects.create(perfil=self.perfil, nome=f'Cuidado {dias}',
                                    tipo='Consulta', data=hoje + timedelta(days=dias))
         resposta = self.client.get(reverse('InicioLogado'))
         nomes = [c.nome for c in resposta.context['proximos_cuidados']]
-        self.assertEqual(nomes, ['Cuidado 1', 'Cuidado 2', 'Cuidado 3'])
+        self.assertEqual(nomes, ['Cuidado 1', 'Cuidado 2', 'Cuidado 3', 'Cuidado 4'])
 
     def test_nao_mostra_cuidados_concluidos_ou_passados(self):
         hoje = date.today()

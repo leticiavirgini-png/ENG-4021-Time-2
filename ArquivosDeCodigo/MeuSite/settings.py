@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,13 +20,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
+# As configurações sensíveis podem vir de variáveis de ambiente.
+# Sem as variáveis, o projeto continua com os mesmos valores de desenvolvimento de antes.
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-&j3+z(=)&a2s7-_p6%(9_5rhe3h6-j8u@jznpf0*m16yaah(yz"
+# Em produção, defina MEDMAP_SECRET_KEY com uma chave nova e secreta.
+SECRET_KEY = os.environ.get(
+    'MEDMAP_SECRET_KEY',
+    "django-insecure-&j3+z(=)&a2s7-_p6%(9_5rhe3h6-j8u@jznpf0*m16yaah(yz"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# MEDMAP_DEBUG=False desliga o modo de depuração.
+DEBUG = os.environ.get('MEDMAP_DEBUG', 'True').strip().lower() in ('1', 'true', 'sim', 'yes')
 
-ALLOWED_HOSTS = ['*']
+# Lista separada por vírgulas, por exemplo: MEDMAP_ALLOWED_HOSTS=medmap.com,www.medmap.com
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get('MEDMAP_ALLOWED_HOSTS', '*').split(',')
+    if host.strip()
+]
 
 
 # Application definition

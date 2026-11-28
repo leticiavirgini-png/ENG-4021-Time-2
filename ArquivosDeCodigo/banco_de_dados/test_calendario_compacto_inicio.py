@@ -15,11 +15,12 @@ class TestesCalendarioCompactoInicio(TestCase):
         sessao['usuario_id'] = self.usuario.id
         sessao.save()
 
-    def test_novo_card_preserva_os_quatro_anteriores(self):
+    def test_inicio_mostra_calendario_e_os_cards_do_fluxo(self):
+        # a tela inicial foi reorganizada: agora tem 3 cards (Perfil, Histórico e Check-up)
         resposta = self.client.get(reverse('InicioLogado'), {'mes': '2026-11'})
         self.assertEqual(resposta.status_code, 200)
         self.assertContains(resposta, 'Calendário')
-        self.assertEqual(resposta.content.count(b'class="area-card '), 5)
+        self.assertEqual(resposta.content.count(b'class="area-card '), 3)
 
     def test_destaca_somente_datas_do_usuario(self):
         Cuidado.objects.create(perfil=self.perfil, nome='Consulta', tipo='Consulta',

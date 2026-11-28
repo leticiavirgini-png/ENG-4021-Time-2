@@ -12,6 +12,7 @@ class TestesFiltrosCalendario(TestCase):
         usuario = Usuario.objects.create(
             nome='Pessoa Teste', email='teste-filtros@medmap.com', senha='teste'
         )
+        cls.usuario = usuario
         perfil = Perfil.objects.create(
             usuario=usuario, nome='Pessoa Teste',
             data_nascimento=date(1998, 5, 10), sexo='Não informado'
@@ -24,6 +25,12 @@ class TestesFiltrosCalendario(TestCase):
         ]
         for tipo, nome, dia in exemplos:
             Cuidado.objects.create(perfil=perfil, tipo=tipo, nome=nome, data=dia)
+
+    def setUp(self):
+        # o calendário mostra só os cuidados de quem entrou na conta
+        sessao = self.client.session
+        sessao['usuario_id'] = self.usuario.id
+        sessao.save()
 
     def nomes(self, resposta):
         return [c.nome for c in resposta.context['cuidados']]
